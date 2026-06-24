@@ -1,15 +1,26 @@
 import './App.css'
-import ProductCard from './components/productCard'
-import { FaHome } from "react-icons/fa";
+import HomePage from './Pages/homePage';
+import LoginPage from './Pages/loginPage';
+import RegisterPage from './Pages/registerPage';
+import { Routes, Route } from 'react-router-dom';
+import AdminPage from './Pages/adminPage';
+import TestPage from './Pages/testPage';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
 
   return (
-   <div>
-     <ProductCard name="Apple iphone 5s" price="$100" image="https://picsum.photos/id/3/200/300"/>" 
-     <ProductCard name="Apple Laptop" price="$1000" image="https://picsum.photos/id/0/200/300"/>
-     <FaHome className="text-[500px] text-green-700" />{/*text-2xl*/}
-   </div>
+   <div className="w-full h-screen">
+    <Toaster position="top-right" /> {/* for toast notifications */}
+
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route path="/admin/*" element={<AdminPage />} />
+      <Route path="/test" element={<TestPage />} />
+    </Routes> 
+  </div>
   )
 }
 
