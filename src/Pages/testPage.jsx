@@ -1,5 +1,58 @@
 import { useState } from "react"
 import toast from "react-hot-toast"
+import uploadMedia from "../lib/uploadMedia"
+
+
+export default function TestPage(){
+
+    const[file,setFile] = useState(null)
+
+    function uploadfile(){    
+        uploadMedia(file).then(
+            (res)=>
+                console.log(res)
+        ).catch(
+             (err)=>{
+                console.log(err)
+                toast.error("Upload failed")
+            }
+        )
+    }
+
+/* async function uploadFileAsync(){
+    try{
+         const fileUrl = await uploadMedia(file)
+            console.log(fileUrl)
+        }
+        catch(err){
+            console.log(err)
+            toast.error("Upload failed")
+        }
+    }*/
+
+
+    return(
+        <div className="w-full h-full flex items-center justify-center">
+            <input type="file" 
+            onChange={ //Input type - this get data in a array
+                  (e)=>{
+                    setFile(e.target.files[0])
+                 }  
+             }/>
+             <button onClick={uploadfile} className="bg-green-600 text-white p-2 rounded-lg">Submit</button>
+        </div>
+    )
+}
+
+
+
+
+
+
+//* React Hooks: useState, Event Handling, and Toast Notifications
+
+/*import { useState } from "react"
+import toast from "react-hot-toast"
 
 export default function TestPage() {
 
@@ -63,10 +116,12 @@ export default function TestPage() {
             </div>
         </div>
     )
-}
+}*/
 
 
 
+
+//* Margin and Padding in CSS
 
 /*export default function TestPage() {
     return(
@@ -93,10 +148,9 @@ export default function TestPage() {
 
 
 
-//Alignment and positions in CSS:
+//* Alignment and positions in CSS:
 
-/*
-export default function TestPage() {
+/*export default function TestPage() {
     return(
         <div className="w-full h-full">
             <div className="flex flex-col relative items-center gap-2 justify-center w-[600px] h-[600px]  bg-yellow-400">  // normally block but in flex ---> default is flex-row ---> all in horizontal row(__)

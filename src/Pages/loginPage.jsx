@@ -2,12 +2,14 @@ import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../lib/api";
 
 export default function LoginPage() {
 
     const [email , setEmail] = useState("")
     const [password , setPassword] = useState("")
+    const navigate = useNavigate()
 
     function handleLogin(){
         /*toast.success(email)
@@ -33,8 +35,16 @@ export default function LoginPage() {
 
                 //browser store
                 localStorage.setItem("token", res.data.token)
-                const token = localStorage.getItem("token")
-
+                
+                if(res.data.isAdmin){
+                    //admin dashboard
+                    //1. window.location.href = "/admin"
+                    navigate("/admin")
+                }else{
+                    //home page 
+                    //1. window.location.href = "/"
+                    navigate("/")
+                }
             }
         ).catch(
             (err)=>{
