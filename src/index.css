@@ -5,3 +5,11 @@
 	--color-secondary: #333333;
 	--color-accent: #000080;
 }
+
+.tooltip-text{
+	display: none;
+}
+
+.tooltip:hover .tooltip-text{
+	display: block;
+}

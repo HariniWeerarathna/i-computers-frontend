@@ -1,11 +1,34 @@
-import { useState } from "react"
+import LoadingAnimation from "../components/loadingAnimation"
+
+export default function TestPage(){
+
+    return(
+        <div className="w-[300px] h-[300px]">
+            <LoadingAnimation />
+        </div>
+    )
+    
+}
+
+
+
+
+
+
+
+
+//* React File Upload Component:
+
+/*import { useState } from "react"
 import toast from "react-hot-toast"
 import uploadMedia from "../lib/uploadMedia"
-
 
 export default function TestPage(){
 
     const[file,setFile] = useState(null)
+
+
+//? 1.File Upload (Promise)
 
     function uploadfile(){    
         uploadMedia(file).then(
@@ -19,16 +42,19 @@ export default function TestPage(){
         )
     }
 
-/* async function uploadFileAsync(){
-    try{
-         const fileUrl = await uploadMedia(file)
-            console.log(fileUrl)
-        }
-        catch(err){
-            console.log(err)
-            toast.error("Upload failed")
-        }
-    }*/
+
+//? 2. File Upload (Async/Await)
+
+// async function uploadFileAsync(){
+//     try{
+//          const fileUrl = await uploadMedia(file)
+//             console.log(fileUrl)
+//         }
+//         catch(err){
+//             console.log(err)
+//             toast.error("Upload failed")
+//         }
+//     }
 
 
     return(
@@ -42,7 +68,7 @@ export default function TestPage(){
              <button onClick={uploadfile} className="bg-green-600 text-white p-2 rounded-lg">Submit</button>
         </div>
     )
-}
+}*/
 
 
 
@@ -121,6 +147,7 @@ export default function TestPage() {
 
 
 
+
 //* Margin and Padding in CSS
 
 /*export default function TestPage() {
@@ -144,6 +171,7 @@ export default function TestPage() {
         </div>
     )
 }*/
+
 
 
 
