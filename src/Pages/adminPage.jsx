@@ -3,6 +3,7 @@ import { LuUsersRound } from "react-icons/lu";
 import { Link, Route, Routes } from "react-router-dom";
 import AdminProductsPage from "./admin/adminProductsPage";
 import AddProductForm from "./admin/adminAddProductForm";
+import EditProductForm from "./admin/adminEditProductForm";
 
 export default function AdminPage(){
     return(
@@ -24,6 +25,7 @@ export default function AdminPage(){
                     <Route path="/products" element={<AdminProductsPage />} />
                     <Route path="/users" element={<h1>Users Page</h1>} />
                     <Route path="/add-product" element={<AddProductForm/>}/>
+                    <Route path="/edit-product" element={<EditProductForm/>}/>
                 </Routes>
 
             </div>

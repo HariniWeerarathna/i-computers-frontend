@@ -3,20 +3,25 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { CiEdit, CiTrash } from "react-icons/ci";
 import api from "../../lib/api";
+import LoadingAnimation from "../../components/loadingAnimation";
+import DeleteProductModal from "../../components/deleteProductModal";
+import editProductForm from "./adminEditProductForm";
 
-
-
-export default function AdminProductsPage(){
+export default function AdminProductsPage(){//parent component - AdminProductsPage is the parent component of DeleteProductModal
   
     const [products, setProducts] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-      api.get("/products").then((response) => {
-        console.log(response.data);
-        setProducts(response.data);
+      api.get("/products").then((response) => {       
+        if (isLoading) {
+          console.log(response.data);
+          setProducts(response.data);
+          setIsLoading(false);
+        }
       });
 	}, 
-    []);
+    [isLoading]);
 
 
     //make a backend call to get all products
@@ -24,8 +29,88 @@ export default function AdminProductsPage(){
 
 
 
-    return(
-        <div className="w-full max-h-full flex flex-col p-4 items-start gap-0 overflow-y-scroll">
+  //? delete product functions:
+
+    //* 1. Deleting a Product Using JavaScript confirm() Dialog
+
+      /*async function handleDelete(productId){
+        const token = localStorage.getItem("token");
+        const confirmed = confirm("Are you sure you want to delete this product?");
+
+        if(!confirmed){
+          return;
+        }
+        try{
+          await api.delete(`/products/${productId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+          toast.success("Product deleted successfully");
+          setIsLoading(true);
+        }catch(error){
+          console.log(error);
+        }
+      }*/
+
+
+    //* 2. Deleting a Product Using react-hot-toast
+    
+      /*function handleDelete(productId) {
+        toast(
+          (t) => {
+            return (
+              <div className="w-[250px] h-[150px]  flex flex-col justify-center items-center gap-4">
+                <h1 className="text-lg font-semibold text-secondary">
+                  Are you sure you want to delete this product with ID: {productId}?
+                </h1>
+                <div className="flex gap-4 justify-center items-center">
+                  <button
+                    className="bg-red-600 text-white px-4 py-2 rounded-md"
+                    onClick={async () => {
+                      const token = localStorage.getItem("token");
+                      try {
+                        await api.delete(`/products/${productId}`, {
+                          headers: {
+                            Authorization: `Bearer ${token}`,
+                          },
+                        });
+                        toast.success("Product deleted successfully");
+                        setIsLoading(true);
+                        toast.dismiss(t.id); // Dismiss the toast after successful deletion
+                      } catch (error) {
+                        console.log(error);
+                        toast.dismiss(t.id); // Dismiss the toast if there's an error
+                        toast.error("Failed to delete product"); // Show error toast if deletion fails
+                      }
+                    }}
+                  >
+                    Yes
+                  </button>
+                  <button
+                    className="bg-gray-300 text-black px-4 py-2 rounded-md"
+                    onClick={() => {
+                      toast.dismiss(t.id); // Dismiss the toast on cancel
+                    }}
+                  >
+                    No
+                  </button>
+                </div>
+              </div>
+            );
+          },
+          {
+            position: "top-center",
+            duration: Infinity,
+          },
+        );
+      }*/
+
+
+        
+
+  return(
+    <div className="w-full max-h-full flex flex-col p-4 items-start gap-0 overflow-y-scroll">
 
             {
                 // products.map( // .map() works only on arrays - loop through an array and create a new array.(inside return)
@@ -43,11 +128,25 @@ export default function AdminProductsPage(){
             }
 
         <div className="w-full h-[100px] bg-white shadow-md rounded-md flex items-center p-4 justify-between mb-8">
+            {isLoading && <LoadingAnimation />}
+            
             <h1 className="text-2xl font-semibold text-secondary">Add Product</h1>  
-            <div className="flex gap-2">       
-                {products.length} Products
+            
+            <div className="flex gap-2 justify-center items-center">       
+                <span>{products.length} Products</span>
+                <button
+                  onClick={() => {
+                    //window.location.reload()
+
+                    //rerun the function inside the useEffect
+
+                    setIsLoading(true);
+                  }}
+                  className="bg-accent text-white px-4 py-2 rounded-md">
+                    Refresh
+                </button>
             </div>
-         </div>
+        </div>
 
 
 
@@ -85,25 +184,36 @@ export default function AdminProductsPage(){
                     <td>{item.category}</td>
                     <td>{item.brand}</td>
                     <td>{item.model}</td>
+
                     <td>                
                     {/* icons only */}
-                    <div className="flex gap-2 justify-center items-center">
-                        <CiEdit />
-                        <CiTrash />
-                    </div>
+                      <div className="flex gap-2 justify-center items-center">
+                          {/* navigate("/admin/edit-product" , {state: item}) */}
+                        <Link
+                          state={item}
+                          to="/admin/edit-product"><CiEdit />
+                        </Link>
+                          
+                        {/* <CiTrash
+                            className="hover:text-red-600 cursor-pointer"
+                            onClick={() => handleDelete(item.productId)}
+                        /> */}
+                        <DeleteProductModal product={item} refresh={()=>{setIsLoading(true)}}/>
+                      </div>
                     </td>    
+
                 </tr>
             );
             })}
             </tbody>
-	    </table>        
+	      </table>        
             
 
         <Link to="/admin/add-product" className="w-[80px] h-[80px] bg-accent text-white rounded-full text-2xl flex justify-center items-center fixed right-[35px] bottom-[35px]">
             <FaPlus />
             </Link>             
     </div>
-    )
+  )
 }
 
 
