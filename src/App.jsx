@@ -10,11 +10,11 @@ import { Toaster } from 'react-hot-toast';
 function App() {
 
   return (
-   <div className="w-full h-screen"> {/* 1st Div  -->  h-screen */}
+   <div className="w-full h-screen bg-primary"> {/* 1st Div  -->  h-screen */}
     <Toaster position="top-right" /> {/* for toast notifications */}
 
     <Routes>
-      <Route path="/" element={<HomePage />} />
+      <Route path="/*" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/admin/*" element={<AdminPage />} />

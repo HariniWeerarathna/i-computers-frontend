@@ -11,7 +11,7 @@ export default function AdminPage(){
 
             <div className="w-[360px] h-full shadow-2xl   flex flex-col">
                 <div className="w-full h-[60px] p-2 flex gap-2 items-end mb-2">
-                    <img src="/logo.jpg" alt="logo" className=" h-full " />
+                    <img src="/logo.png" alt="logo" className=" h-full " />
                     <span className="text-2xl font-bold">Admin </span>
                 </div>
                 <Link to="/admin" className="w-full flex items-center p-2 text-xl gap-2 mb-2 hover:bg-accent hover:text-white"><BsCart2 className="text-3xl" /> Orders</Link>
