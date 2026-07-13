@@ -24,7 +24,7 @@ export default function ProductsPage() {
     )
 
     return(
-        <div className="w-full flex flex-wrap p-8">
+        <div className="w-full flex flex-wrap p-8 justify-center">
         {
             loading?<LoadingAnimation/>
             :<>
