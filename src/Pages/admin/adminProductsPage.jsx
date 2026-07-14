@@ -127,7 +127,7 @@ export default function AdminProductsPage(){//parent component - AdminProductsPa
 				// )   
             }
 
-        <div className="w-full h-[100px] bg-white shadow-md rounded-md flex items-center p-4 justify-between mb-8">
+        <div className="w-full h-[100px] bg-white shadow-md rounded-md flex items-center p-4 justify-between mb-5">
             {isLoading && <LoadingAnimation />}
             
             <h1 className="text-2xl font-semibold text-secondary">Add Product</h1>  

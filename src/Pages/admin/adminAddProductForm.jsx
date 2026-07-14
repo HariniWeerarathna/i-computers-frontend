@@ -209,6 +209,7 @@ export default function AddProductForm(){
                     <option value="Motherboard">Motherboard</option>
                     <option value="Power Supply">Power Supply</option>
                     <option value="RAM">RAM</option>
+                    <option value="Storage">Storage</option>
                 </select>
             </div>
 
