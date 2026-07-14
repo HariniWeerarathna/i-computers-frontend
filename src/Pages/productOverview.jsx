@@ -8,6 +8,7 @@ import { BiCategory } from "react-icons/bi";
 import { FaAngleRight } from "react-icons/fa";
 import { HiOutlineBadgeCheck } from "react-icons/hi";
 import getFormattedPrice from "../lib/price-format";
+import { addToCart, getCart } from "../lib/cart";
 
 
 export default function ProductOverview(){
@@ -88,7 +89,7 @@ export default function ProductOverview(){
                             <button className="w-[200px] h-[60px] bg-accent border-2 text-white font-semibold rounded-md hover:bg-white hover:text-accent  ml-2 transition-colors duration-300 cursor-pointer"
                             onClick={
                                 ()=>{
-                                    const cart = getCart();
+                                    const cart = getCart(); //get the current cart from local storage
                                     console.log(cart);
                                 }
                             }>Buy now</button>
