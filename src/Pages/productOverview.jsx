@@ -8,7 +8,9 @@ import { BiCategory } from "react-icons/bi";
 import { FaAngleRight } from "react-icons/fa";
 import { HiOutlineBadgeCheck } from "react-icons/hi";
 import getFormattedPrice from "../lib/price-format";
-import { addToCart, getCart } from "../lib/cart";
+import { addToCart } from "../lib/cart";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 export default function ProductOverview(){
@@ -17,6 +19,7 @@ export default function ProductOverview(){
     const params = useParams();
     const [product,setProduct] = useState(location.state);
     const [loading,setLoading] = useState(true);
+    const navigate = useNavigate();
 
      useEffect(
         ()=>{
@@ -76,7 +79,6 @@ export default function ProductOverview(){
                         <p className="text-lg font-normal text-gray-600 mb-4">{product.description}</p>
                         
 
-
                         <div className="w-full  flex ">
                             <button className="w-[200px] h-[60px] bg-white border-2 border-accent text-accent font-semibold rounded-md hover:bg-accent hover:text-white transition-colors duration-300 cursor-pointer" //transition - it use to make the hover effect smooth of using duration.
                             onClick={
@@ -86,14 +88,51 @@ export default function ProductOverview(){
                                 }
                             }>Add to Cart</button>
 
-                            <button className="w-[200px] h-[60px] bg-accent border-2 text-white font-semibold rounded-md hover:bg-white hover:text-accent  ml-2 transition-colors duration-300 cursor-pointer"
+
+                            
+                            {/* //Passing data - 1.using link state
+                            <Link
+                                to="/checkout"
+                                state={
+                                    [{
+                                        product : {
+                                            productId : product.productId,
+                                            name : product.name,
+                                            price : product.price,
+                                            labelledPrice : product.labelledPrice,
+                                            image : product.images[0]
+                                        },
+                                        qty : 1
+                                    }]
+                                }
+                            className="w-[200px] h-[60px] bg-accent border-2 text-white font-semibold rounded-md hover:bg-white hover:text-accent  ml-2 transition-colors duration-300 cursor-pointer flex justify-center items-center"
+                            >Buy now</Link>
+                            
+
+                            //Passing data - 2. using navigate*/}
+                            <button
                             onClick={
                                 ()=>{
-                                    const cart = getCart(); //get the current cart from local storage
-                                    console.log(cart);
+                                    navigate("/checkout" , {
+                                        state : [
+                                            {
+                                                product : {
+                                                    productId : product.productId,
+                                                    name : product.name,
+                                                    price : product.price,
+                                                    labelledPrice : product.labelledPrice,
+                                                    image : product.images[0]
+                                                },
+                                                qty : 1
+                                            }
+                                        ]
+                                    })
                                 }
-                            }>Buy now</button>
-                        </div>
+                            }
+                            className="w-[200px] h-[60px] bg-accent border-2 text-white font-semibold rounded-md hover:bg-white hover:text-accent  ml-2 transition-colors duration-300 cursor-pointer flex justify-center items-center">
+                                Buy now
+                            </button>
+                        </div> 
                         
                     </div>
                 </div>
