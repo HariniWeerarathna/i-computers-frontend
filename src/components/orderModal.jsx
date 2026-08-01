@@ -5,6 +5,7 @@ import getFormattedPrice from '../lib/price-format';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import uploadMedia from '../lib/uploadMedia';
+import api from '../lib/api';
 
 
 export default function OrderModal(props){
@@ -31,9 +32,41 @@ export default function OrderModal(props){
             return
         }
         
-        // const bankSlipLink = await uploadMedia(file)
+        const orderData = {
+            firstName : firstName,
+            lastName : lastName,
+            addressLine1 : addressLine1,
+            addressLine2 : addressLine2,
+            city : city,
+            postalCode : postalCode,
+            phone : phoneNumber,
+            secondaryPhone : secondaryPhoneNumber,//white one is backend calling one so ---> white name = backend name
+            customerNotes : specialNotes,
+            items : []
+        }
+        
+        for(let i=0; i<props.cart.length; i++){
 
-        //
+            orderData.items.push({
+                productId : props.cart[i].product.productId,
+                qty : props.cart[i].qty
+            })
+        }
+
+        try{
+            await api.post("/orders", orderData, {
+                headers : {
+                    Authorization : `Bearer ${token}`
+                }
+            })
+            toast.success("Order placed successfully")
+            setModalIsOpen(false)
+            navigate("/products")
+
+        }catch(err){
+            console.log(err)
+            toast.error("Failed to place order")
+        }
     }
 
     return(
@@ -67,6 +100,7 @@ export default function OrderModal(props){
                                 <h1 className='text-xl font-semibold text-white'>Order Summary</h1>
                             </div>
                     </div>
+
                     {/* total */}
                     <div className='w-full h-[70px] bg-[#7979b8]  flex sticky top-0'>
                             <div className='w-1/2 h-full  flex flex-row justify-center items-center gap-2'>
@@ -78,6 +112,7 @@ export default function OrderModal(props){
                                 <span className='text-lg font-semibold text-white'>{props.cart.length}</span>
                             </div>                           
                     </div>
+
                         <div className='w-full  flex flex-row flex-wrap text-secondary'>                            
                             <div className='w-1/2 h-[100px]  flex flex-col justify-center p-4'>
                                 <label className="">First Name</label>
@@ -169,32 +204,29 @@ export default function OrderModal(props){
                                 type='file'
                                 onChange={(e)=>{setFile(e.target.files[0])}}
                                 className='w-full h-[40px] rounded-md outline-0 border-gray-500 border px-2 text-black'
-                                />
-                               
+                                /> 
                             </div> */}
 
-                            <div className='w-full sticky bottom-0 h-[70px] bg-[#7979b8] rounded-b-2xl flex flex-row justify-center items-center gap-2'>
-                                <button
-                                onClick={handleConfirmOrder}
-                                className='bg-accent/75 hover:bg-accent cursor-pointer transition-colors duration-300 text-white px-4 py-2 rounded-md font-semibold'>
-                                    Confirm Order
-                                </button>
 
-                                {/* cancel */}
-                                <button
-                                onClick={()=>{
-                                    setModalIsOpen(false)
-                                }}
-                                className='bg-gray-500/75 hover:bg-gray-500 cursor-pointer transition-colors duration-300 text-white px-4 py-2 rounded-md font-semibold'>
-                                    Cancel
-                                </button>             
+                        <div className='w-full sticky bottom-0 h-[70px] bg-[#7979b8] rounded-b-2xl flex flex-row justify-center items-center gap-2'>
+                            <button
+                            onClick={handleConfirmOrder}
+                            className='bg-accent/75 hover:bg-accent cursor-pointer transition-colors duration-300 text-white px-4 py-2 rounded-md font-semibold'>
+                                Confirm Order
+                            </button>
 
-                            </div>
-
+                            {/* cancel */}
+                            <button
+                            onClick={()=>{
+                                setModalIsOpen(false)
+                            }}
+                            className='bg-gray-500/75 hover:bg-gray-500 cursor-pointer transition-colors duration-300 text-white px-4 py-2 rounded-md font-semibold'>
+                                Cancel
+                            </button>             
                         </div>
-                
-                </div>
-                
+
+                    </div>
+                </div>  
             </Modal>
         </>
 
