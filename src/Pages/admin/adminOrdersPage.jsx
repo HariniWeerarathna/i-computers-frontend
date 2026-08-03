@@ -32,8 +32,8 @@ export default function AdminOrdersPage() {
     }, [isLoading]);
 
 
+   
     
-
     return (
         <div className="w-full max-h-full  flex flex-col p-4 items-start gap-0 overflow-y-scroll">
             
@@ -146,3 +146,43 @@ export default function AdminOrdersPage() {
         </div>
     );
 }
+
+
+
+
+
+
+
+/* //?Explain Use effect:
+
+useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    //* Send a GET request to fetch paginated orders
+    //* URL format: /orders/{pageSize}/{currentPage}
+    api.get("/orders/" + pageSize + "/" + currentPage, {
+        headers: {
+            //* Include the token in the Authorization header
+            //* so the backend can verify the user
+            Authorization: `Bearer ${token}`
+        }
+    }).then((response) => {
+        // Only update the state if the page is currently loading
+        if (isLoading) {
+            // Display the API response in the browser console (for debugging)
+            console.log(response.data);
+
+            // Store the list of orders returned by the API
+            setOrders(response.data.orders);
+
+            // Store the total number of available pages
+            setTotalPages(response.data.totalPages);
+
+            // Store the total number of orders in the database
+            setTotalOrders(response.data.totalCount);
+
+            // Loading is complete, so stop showing the loading state
+            setIsLoading(false);
+        }
+    });
+}, [isLoading]); // Runs when the component first loads and whenever isLoading changes */
