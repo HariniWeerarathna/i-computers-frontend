@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react";
-import api from "../../lib/api";
-import LoadingAnimation from "../../components/loadingAnimation";
-import getFormattedPrice from "../../lib/price-format";
-import formatTimestamp from "../../lib/date-format";
-import AdminOrderDetailsModal from "../../components/adminOrderDetailsModal";
+import api from "../lib/api";
+import LoadingAnimation from "../components/loadingAnimation";
+import formatTimestamp from "../lib/date-format";
+import getFormattedPrice from "../lib/price-format";
+import OrderDetailsModal from "../components/orderDetailsModal";
 
-export default function AdminOrdersPage() {
+
+export default function MyOrdersPage() {
     const [orders, setOrders] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [pageSize, setPageSize] = useState(3);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [totalOrders, setTotalOrders] = useState(0);
-
     useEffect(() => {
         const token = localStorage.getItem("token");
-
         api.get("/orders/"+pageSize+"/"+currentPage, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -31,16 +30,13 @@ export default function AdminOrdersPage() {
         });
     }, [isLoading]);
 
-
-   
-    
     return (
         <div className="w-full max-h-full  flex flex-col p-4 items-start gap-0 overflow-y-scroll">
             
 
             <div className="w-full min-h-[100px] bg-white shadow-md rounded-md flex items-center p-4 justify-between mb-8">
                 {isLoading && <LoadingAnimation />}
-                <h1 className="text-2xl font-semibold text-secondary">Orders</h1>
+                <h1 className="text-2xl font-semibold text-secondary">My Orders</h1>
 
                 <div className="flex gap-4 justify-center items-center">
                     <span>{totalOrders} Orders</span>
@@ -54,7 +50,7 @@ export default function AdminOrdersPage() {
                     </button>
                 </div>
             </div>
-            <table className="w-full bg-white shadow-md rounded-md overflow-hidden text-center text-sm mb-[100px]">
+            <table className="w-full bg-white shadow-md rounded-md overflow-hidden text-center mb-[100px]">
                 <thead className="bg-accent text-white h-[60px]">
                     <tr>
                         <th>Order ID</th>
@@ -67,7 +63,7 @@ export default function AdminOrdersPage() {
                         <th>Status</th>
                         <th>Item count</th>
                         <th>Total</th>
-                        <th>Actions</th>
+                        <th></th>
                     </tr>
                 </thead>
 
@@ -88,7 +84,7 @@ export default function AdminOrdersPage() {
                                 <td>{getFormattedPrice(item.totalAmount)}</td>
                                 <td>
                                     <div className="flex justify-center items-center gap-2">
-                                        <AdminOrderDetailsModal order={item} refresh={() => setIsLoading(true)} />
+                                        <OrderDetailsModal order={item}/>
                                     </div>
                                     
                                 </td>
@@ -146,43 +142,3 @@ export default function AdminOrdersPage() {
         </div>
     );
 }
-
-
-
-
-
-
-
-/* //?Explain Use effect:
-
-useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    //* Send a GET request to fetch paginated orders
-    //* URL format: /orders/{pageSize}/{currentPage}
-    api.get("/orders/" + pageSize + "/" + currentPage, {
-        headers: {
-            //* Include the token in the Authorization header
-            //* so the backend can verify the user
-            Authorization: `Bearer ${token}`
-        }
-    }).then((response) => {
-        // Only update the state if the page is currently loading
-        if (isLoading) {
-            // Display the API response in the browser console (for debugging)
-            console.log(response.data);
-
-            // Store the list of orders returned by the API
-            setOrders(response.data.orders);
-
-            // Store the total number of available pages
-            setTotalPages(response.data.totalPages);
-
-            // Store the total number of orders in the database
-            setTotalOrders(response.data.totalCount);
-
-            // Loading is complete, so stop showing the loading state
-            setIsLoading(false);
-        }
-    });
-}, [isLoading]); // Runs when the component first loads and whenever isLoading changes */

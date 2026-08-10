@@ -3,12 +3,41 @@ import { IoEyeOutline } from "react-icons/io5"
 import Modal from 'react-modal';
 import getFormattedPrice from "../lib/price-format";
 import formatTimestamp from "../lib/date-format";
+import toast from "react-hot-toast";
+import api from "../lib/api";
+
+
 export default function AdminOrderDetailsModal(props){
 
     const refresh = props.refresh
     const order = props.order
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [status, setStatus] = useState(order.status)
+
+
+    async function updateOrderStatus(){
+        try{
+
+            const token = localStorage.getItem("token")
+
+            await api.put("/orders/"+order.orderId+"/"+status, {}, {
+                headers : {
+                    "Authorization" : `Bearer ${token}`
+                }
+            })
+
+            toast.success("Order status updated successfully")
+            refresh()
+            setIsModalOpen(false)
+
+        }catch(err){
+            console.log(err)
+            toast.error("Failed to update order status")
+        }
+    }
+
+
+
 
     return(
         <>
@@ -94,7 +123,7 @@ export default function AdminOrderDetailsModal(props){
                                 ))
                             
                             }
-                        {status != order.status&& <button className="absolute bottom-3 right-3 bg-green-500 hover:bg-green-600 p-2 rounded-md text-white font-semibold shadow-2xl">
+                        {status != order.status&& <button className="sticky bottom-3 right-3 bg-green-500 hover:bg-green-600 p-2 rounded-md text-white font-semibold shadow-2xl" onClick={updateOrderStatus}>
                             Update Status
                         </button>}
                 </div>

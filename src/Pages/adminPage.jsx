@@ -5,6 +5,7 @@ import AdminProductsPage from "./admin/adminProductsPage";
 import AddProductForm from "./admin/adminAddProductForm";
 import EditProductForm from "./admin/adminEditProductForm";
 import AdminOrdersPage from "./admin/adminOrdersPage";
+import AdminUsersPage from "./admin/adminUsersPage";
 
 
 export default function AdminPage(){
@@ -25,7 +26,7 @@ export default function AdminPage(){
                 <Routes>
                     <Route path="/" element={<AdminOrdersPage />} />
                     <Route path="/products" element={<AdminProductsPage />} />
-                    <Route path="/users" element={<h1>Users Page</h1>} />
+                    <Route path="/users" element={<AdminUsersPage />} />
                     <Route path="/add-product" element={<AddProductForm/>}/>
                     <Route path="/edit-product" element={<EditProductForm/>}/>
                 </Routes>
