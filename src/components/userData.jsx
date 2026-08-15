@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../lib/api";
 import toast from "react-hot-toast";
+import UserContext from "../context/userContext";
+
 
 export default function UserData(){
 
-    const [user, setUser] = useState(null);
+    const userData =  useContext(UserContext)
     const [selectedOption, setSelectedOption] = useState("name");
     const navigate = useNavigate();
 
@@ -20,16 +22,13 @@ export default function UserData(){
                         Authorization: `Bearer ${token}`
                     }
                 }).then((res)=>{
+                    userData.setUser(res.data.user);
 
-                    setUser(res.data.user);
-
-                }).catch((err)=>{
-                    
+                }).catch((err)=>{          
                     toast.error("Please login again");
                     localStorage.removeItem("token");
-                    setUser(null);
+                    userData.setUser(null);
                 })
-
             }
         }
         ,[]
@@ -37,7 +36,7 @@ export default function UserData(){
 
     return (
         <>
-            {user == null ?
+            {userData.user == null ?
                 <div className="text-white p-2">
                     <Link to="/login">Login </Link>
                     |
@@ -45,7 +44,7 @@ export default function UserData(){
                 </div>
             :
                 <div className="flex gap-2">
-                    <img src={user.image} alt="Avatar" className="w-[40px] h-[40px] rounded-full border border-white p-2"/>
+                    <img src={userData.user.image} alt="Avatar" className="w-[40px] h-[40px] rounded-full border border-white p-2"/>
                     <select
                         value={selectedOption}
                         onChange={(e) => {
@@ -55,20 +54,18 @@ export default function UserData(){
                                 navigate("/my-orders");
                             }else if(e.target.value === "logout"){
                                 localStorage.removeItem("token");
-                                setUser(null);
+                                userData.setUser(null);
                                 navigate("/login");
                             }
                         }}
                         className="bg-accent text-white p-2 rounded">
-                        <option value="name">{user.firstName} {user.lastName}</option>
+                        <option value="name">{userData.user.firstName} {userData.user.lastName}</option>
                         <option value="settings">Settings</option>
                         <option value="my-orders">My Orders</option>
                         <option value="logout">Logout</option>
                     </select>
                 </div>
             }
-
-            
         </>
     )
 }

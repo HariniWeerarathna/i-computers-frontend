@@ -6,21 +6,38 @@ import { Routes, Route } from 'react-router-dom';
 import AdminPage from './Pages/adminPage';
 import TestPage from './Pages/testPage';
 import { Toaster } from 'react-hot-toast';
+import { useEffect, useState } from "react";
+import UserContext from './context/userContext';
+
 
 function App() {
 
-  return (
-   <div className="w-full h-screen bg-primary"> {/* 1st Div  -->  h-screen */}
-    <Toaster position="top-right" /> {/* for toast notifications */}
+    const [user, setUser] = useState(null);
+    const [userLoadingFinished, setUserLoadingFinished] = useState(false);
 
-    <Routes>
-      <Route path="/*" element={<HomePage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/admin/*" element={<AdminPage />} />
-      <Route path="/test" element={<TestPage />} />
-    </Routes> 
-  </div>
+  
+  return (
+
+    <UserContext value={
+        {
+			user: user,
+			setUser: setUser,
+            userLoadingFinished: userLoadingFinished,
+		}
+    }>
+
+        <div className="w-full h-screen bg-primary"> {/* 1st Div  -->  h-screen */}
+            <Toaster position="top-right" /> {/* for toast notifications */}
+
+            <Routes>
+                <Route path="/*" element={<HomePage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/admin/*" element={<AdminPage />} />
+                <Route path="/test" element={<TestPage />} />
+            </Routes> 
+        </div>
+    </UserContext>
   )
 }
 
