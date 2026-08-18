@@ -11,10 +11,13 @@ export default function UserData(){
     const [selectedOption, setSelectedOption] = useState("name");
     const navigate = useNavigate();
 
-    useEffect(
+
+
+   //* Adding this useEffect in App.jsx instead of here to avoid multiple API calls when userData component is rendered multiple times.
+   
+   /*useEffect(
         ()=>{
             const token = localStorage.getItem("token");
-
             if(token !=null){
 
                 api.get("/users/me", {
@@ -32,7 +35,9 @@ export default function UserData(){
             }
         }
         ,[]
-    )
+    )*/
+
+
 
     return (
         <>

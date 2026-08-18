@@ -5,15 +5,36 @@ import RegisterPage from './Pages/registerPage';
 import { Routes, Route } from 'react-router-dom';
 import AdminPage from './Pages/adminPage';
 import TestPage from './Pages/testPage';
-import { Toaster } from 'react-hot-toast';
 import { useEffect, useState } from "react";
 import UserContext from './context/userContext';
-
+import toast, { Toaster } from "react-hot-toast";
+import api from "./lib/api";
 
 function App() {
 
     const [user, setUser] = useState(null);
     const [userLoadingFinished, setUserLoadingFinished] = useState(false);
+
+    useEffect(() => {
+		const token = localStorage.getItem("token");
+
+		    api.get("/users/me", {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			.then((res) => {
+				setUser(res.data.user);
+				setUserLoadingFinished(true);
+			})
+			.catch(() => {
+				toast.error("Please login again");
+				localStorage.removeItem("token");
+				setUser(null);
+				setUserLoadingFinished(true);
+			});
+	}, []);
+
 
   
   return (
@@ -42,3 +63,4 @@ function App() {
 }
 
 export default App
+
