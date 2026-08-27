@@ -15,7 +15,7 @@ export default function CheckoutPage(){
                 cart.map(
                     (item,index)=>{
                         return(
-                            <div key={index} className="w-[550px] min-h-[130px] bg-white my-4 shadow-md rounded-md overflow-hidden flex flex-row">
+                            <div key={index} className="w-full lg:w-[550px] min-h-[130px] bg-white my-4 shadow-md rounded-md overflow-hidden flex flex-row">
                                 
                                 <img src={item.product.image} className="h-full w-[130px] object-cover"/>
                                 
@@ -66,10 +66,10 @@ export default function CheckoutPage(){
                     }
                 )
             }
-             <div className="w-[550px] min-h-[90px] fixed bottom-2 bg-white shadow-accent my-4 shadow-sm rounded-md overflow-hidden flex flex-row items-center justify-between px-2">
-                
-                <OrderModal cart={cart}/>
+            <div  className="w-full lg:w-[550px] min-h-[130px]  my-4  rounded-md overflow-hidden flex lg:hidden flex-row"></div>
 
+             <div className="w-full lg:w-[550px] min-h-[90px] fixed bottom-[80px] lg:bottom-2 bg-white shadow-accent my-4 shadow-sm rounded-md overflow-hidden flex flex-row items-center justify-between px-2">
+                <OrderModal cart={cart}/>
                 <span className="text-lg font-semibold text-secondary pr-1">{getFormattedPrice(getCartTotal(cart))}</span>
              </div>
         </div>

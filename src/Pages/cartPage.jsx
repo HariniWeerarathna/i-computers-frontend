@@ -14,7 +14,7 @@ export default function CartPage(){
                 cart.map(
                     (item,index)=>{
                         return(
-                            <div key={index} className="w-[550px] min-h-[130px] bg-white my-4 shadow-md rounded-md overflow-hidden flex flex-row">{/*min-h-[130px] - make sure that the height of the cart item is at least 130px even if the content inside it is less than 130px*/}
+                            <div key={index} className="w-full lg:w-[550px] min-h-[130px] bg-white my-4 shadow-md rounded-md overflow-hidden flex flex-row">{/*min-h-[130px] - make sure that the height of the cart item is at least 130px even if the content inside it is less than 130px*/}
 
                                 <img src={item.product.image} className="h-full w-[130px] object-cover"/>
                                
@@ -55,23 +55,22 @@ export default function CartPage(){
                                         <p className="text-lg font-normal text-gray-600">{getFormattedPrice(item.product.price*item.qty)}</p>
                                     </div>
                               
-
                                 </div>
                             </div>
                         )
                     }
                 )
             }
-            <div className="w-[550px] min-h-[90px] fixed bottom-2 bg-white shadow-accent my-4 shadow-sm rounded-md overflow-hidden flex flex-row items-center justify-between px-2">   
-                
+
+            <div  className="w-full lg:w-[550px] min-h-[130px]  my-4  rounded-md overflow-hidden flex lg:hidden flex-row"></div>
+             <div className="w-full lg:w-[550px] min-h-[90px] fixed bottom-[80px] lg:bottom-2 bg-white shadow-accent my-4 shadow-sm rounded-md overflow-hidden flex flex-row items-center justify-between px-2">
+            
                 <Link state={cart} to="/checkout" className="bg-accent/75 hover:bg-accent transition-colors duration-300 text-white px-4 py-2 rounded-md font-semibold">
                     Checkout
                 </Link>
                 <span className="text-lg font-semibold text-secondary pr-1">{getFormattedPrice(getCartTotal(cart))}</span>
              
-             </div>
-                
-
+             </div>             
         </div>
     )
 }

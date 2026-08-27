@@ -49,15 +49,27 @@ export default function ProductOverview(){
 
             {
                 product!=null&&
-                <div className="w-full h-full min-h-full flex">
-                    <div className="w-1/2 h-full flex justify-center items-center">
-                       <ImageSlideShow images={product.images}/>
-                    </div>
+                <div className="w-full h-auto pb-[80px] lg:pb-0 lg:h-full lg:min-h-full flex flex-col lg:flex-row bg-primary">
+                     <h1 className="lg:hidden text-2xl py-4 px-2 font-semibold">{product.name}
+                            {
+                                product.altNames.map(
+                                    (name , index)=>{
+                                        return(
+                                            <span key={index} className="font-normal text-gray-500"> | {name}</span>
+                                        )
+                                    }
+                                )
+                            }
+                        </h1>
+            
+                
 
                     {/* Product details: */}
-                    <div className="w-1/2 h-full p-8 flex flex-col">
-
-                        <h1 className="text-3xl font-semibold">{product.name}
+                     <div className="lg:w-1/2 lg:h-full flex justify-center items-center">
+                        <ImageSlideShow images={product.images}/>
+                    </div>
+                    <div className="w-full lg:w-1/2 lg:h-full p-8 flex flex-col">
+                        <h1 className="hidden lg:block text-3xl font-semibold">{product.name}
                             {
                                 product.altNames.map(
                                     (name , index)=>{

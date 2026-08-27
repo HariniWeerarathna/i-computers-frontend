@@ -86,16 +86,16 @@ export default function OrderModal(props){
                 style={ 
                     {
                         content : {
-                            width : '450px',
                             margin : 'auto',
                             padding : '0px',
+                            paddingBottom : '0px',
                             backgroundColor : 'transparent',
                             border : 'none'
                         }
                     }
                 }
             >
-                <div className='w-full min-h-full bg-primary rounded-2xl flex flex-col'>
+                <div className='w-full min-h-full bg-primary rounded-2xl flex flex-col z-50'>
                     <div className='w-full h-[70px] bg-accent rounded-t-2xl flex'>
                             {/*  order summary*/}
                             <div className='w-full h-full flex flex-col justify-center items-center'>
@@ -210,7 +210,7 @@ export default function OrderModal(props){
                             </div> */}
 
 
-                        <div className='w-full sticky bottom-0 h-[70px] bg-[#7979b8] rounded-b-2xl flex flex-row justify-center items-center gap-2'>
+                        <div className='w-full sticky bottom-0 h-[70px] bg-[#7979b8] rounded-b-2xl flex flex-row justify-center items-center gap-2 z-50 mb-[80px] lg:mb-0'>
                             <button
                             onClick={handleConfirmOrder}
                             className='bg-accent/75 hover:bg-accent cursor-pointer transition-colors duration-300 text-white px-4 py-2 rounded-md font-semibold'>
