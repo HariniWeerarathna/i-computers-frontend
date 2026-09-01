@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 import UserContext from './context/userContext';
 import toast, { Toaster } from "react-hot-toast";
 import api from "./lib/api";
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
 
 function App() {
 
@@ -37,30 +39,35 @@ function App() {
 
 
   
-  return (
+    return (
+        <GoogleOAuthProvider clientId="778686215223-64q64u8n161lpgu7osgp17h1jt2i3hiq.apps.googleusercontent.com">
+            <UserContext value={
+                {
+                user: user,
+                setUser: setUser,
+                    userLoadingFinished: userLoadingFinished,
+                }
+            }>
 
-    <UserContext value={
-        {
-			user: user,
-			setUser: setUser,
-            userLoadingFinished: userLoadingFinished,
-		}
-    }>
+                <div className="w-full h-screen bg-primary"> {/* 1st Div  -->  h-screen */}
+                    <Toaster position="top-right" /> {/* for toast notifications */}
 
-        <div className="w-full h-screen bg-primary"> {/* 1st Div  -->  h-screen */}
-            <Toaster position="top-right" /> {/* for toast notifications */}
+                    <Routes>
+                        <Route path="/*" element={<HomePage />} />
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/register" element={<RegisterPage />} />
+                        <Route path="/admin/*" element={<AdminPage />} />
+                        <Route path="/test" element={<TestPage />} />
+                    </Routes> 
+                </div>
 
-            <Routes>
-                <Route path="/*" element={<HomePage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/admin/*" element={<AdminPage />} />
-                <Route path="/test" element={<TestPage />} />
-            </Routes> 
-        </div>
-    </UserContext>
-  )
+            </UserContext>
+        </GoogleOAuthProvider>
+    )
 }
 
 export default App
 
+
+
+// 778686215223-64q64u8n161lpgu7osgp17h1jt2i3hiq.apps.googleusercontent.com

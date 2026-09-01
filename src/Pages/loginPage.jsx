@@ -1,15 +1,57 @@
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import toast from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
-import { toast } from "react-hot-toast";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../lib/api";
+import { useGoogleLogin } from "@react-oauth/google";
+import UserContext from "../context/userContext";
 
 export default function LoginPage() {
 
     const [email , setEmail] = useState("")
     const [password , setPassword] = useState("")
     const navigate = useNavigate()
+    const userData = useContext(UserContext)
+
+
+    const googleLogin = useGoogleLogin({
+
+        onSuccess : (response)=>{
+            console.log(response)
+            console.log(response.access_token)
+
+            api.post("/users/google" , {
+                accessToken : response.access_token
+            }).then(
+                (res)=>{
+                    console.log(res)
+                    toast.success("Login successful")
+                    localStorage.setItem("token" , res.data.token)
+
+                    userData.setUser(res.data.user)
+
+                    if(res.data.isAdmin){
+                        navigate("/admin")
+                    }else{
+                        navigate("/")
+                    }
+                }
+                
+            ).catch(
+                (err)=>{
+                    console.log(err)
+                    toast.error("Google Login failed")
+                }
+            )
+
+        },
+        onError : (error)=>{
+            console.log(error)
+            toast.error("Google Login failed")
+        }
+    })
+
+
 
     function handleLogin(){
         /*toast.success(email)
@@ -35,6 +77,7 @@ export default function LoginPage() {
 
                 //browser store
                 localStorage.setItem("token", res.data.token)
+                userData.setUser(res.data.user)
                 
                 if(res.data.isAdmin){
                     //admin dashboard
@@ -91,9 +134,13 @@ export default function LoginPage() {
                 <button onClick={handleLogin}  className="w-full h-12 bg-accent rounded-lg text-white font-bold mt-5 ">Login</button>
                 <p className="w-full  text-right">Do not have an account? register <Link to="/register" className="text-accent font-bold">here</Link></p>
 
-                <button  className="w-full h-12 bg-secondary/20 rounded-lg text-secondary font-bold mt-5 border-2 border-secondary hover:bg-secondary hover:text-white transition-colors flex items-center justify-center gap-2"><FcGoogle /> Login with Google</button>
+                <button  className="w-full h-12 bg-secondary/20 rounded-lg text-secondary font-bold mt-5 border-2 border-secondary hover:bg-secondary hover:text-white transition-colors flex items-center justify-center gap-2" 
+                onClick={googleLogin}><FcGoogle /> Login with Google</button>
 
             </div>     
         </div>
     )
 }
+
+
+ 
