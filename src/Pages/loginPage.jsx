@@ -82,7 +82,8 @@ export default function LoginPage() {
                 if(res.data.isAdmin){
                     //admin dashboard
                     //1. window.location.href = "/admin"
-                    navigate("/admin")
+                    //navigate("/admin")
+                    navigate("/admin" , { replace : true }) // Back button will not work after this navigation
                 }else{
                     //home page 
                     //1. window.location.href = "/"
