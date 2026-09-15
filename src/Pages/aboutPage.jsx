@@ -19,6 +19,9 @@ const values = [
     },
 ];
 
+
+
+
 export default function AboutPage() {
     return (
         <main className="w-full bg-primary px-6 py-12 text-slate-800 lg:px-12">
