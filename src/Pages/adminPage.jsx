@@ -1,11 +1,12 @@
 import { BsBox, BsCart2 } from "react-icons/bs";
-import { LuUsersRound } from "react-icons/lu";
+import { LuMessageSquareText, LuUsersRound } from "react-icons/lu";
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import AdminProductsPage from "./admin/adminProductsPage";
 import AddProductForm from "./admin/adminAddProductForm";
 import EditProductForm from "./admin/adminEditProductForm";
 import AdminOrdersPage from "./admin/adminOrdersPage";
 import AdminUsersPage from "./admin/adminUsersPage";
+import AdminReviewsPage from "./admin/adminReviewsPage";
 import { useContext, useEffect } from "react";
 import UserContext from "../context/userContext";
 
@@ -33,6 +34,7 @@ export default function AdminPage(){
                 <Link to="/admin" className="w-full flex items-center p-2 text-xl gap-2 mb-2 hover:bg-accent hover:text-white"><BsCart2 className="text-3xl" /> Orders</Link>
                 <Link to="/admin/products" className="w-full flex items-center p-2 text-xl gap-2 mb-2 hover:bg-accent hover:text-white"><BsBox className="text-3xl" /> Products</Link>
                 <Link to="/admin/users" className="w-full flex items-center p-2 text-xl gap-2 mb-2 hover:bg-accent hover:text-white"><LuUsersRound className="text-3xl" /> Users</Link>
+                <Link to="/admin/reviews" className="w-full flex items-center p-2 text-xl gap-2 mb-2 hover:bg-accent hover:text-white"><LuMessageSquareText className="text-3xl" /> Reviews</Link>
             </div>
             <div className="w-[calc(100%-340px)]  h-full bg-primary">
 
@@ -40,6 +42,7 @@ export default function AdminPage(){
                     <Route path="/" element={<AdminOrdersPage />} />
                     <Route path="/products" element={<AdminProductsPage />} />
                     <Route path="/users" element={<AdminUsersPage />} />
+                    <Route path="/reviews" element={<AdminReviewsPage />} />
                     <Route path="/add-product" element={<AddProductForm/>}/>
                     <Route path="/edit-product" element={<EditProductForm/>}/>
                 </Routes>
