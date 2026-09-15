@@ -95,14 +95,14 @@ export default function EditProductForm(){
     }
 
     return(
-        <div className="w-full max-h-full  flex flex-wrap p-4 items-start gap-0 overflow-y-scroll">
+        <div className="w-full max-h-full flex flex-wrap items-start gap-0 overflow-y-scroll p-3 pb-20 sm:p-4 sm:pb-4 max-sm:[&>div]:!w-full">
 
             {loading && <LoadingAnimation />}
 
-            <div className="w-full h-[100px] bg-white shadow-md rounded-md flex items-center p-4 justify-between mb-8">
+            <div className="mb-5 flex min-h-[100px] flex-col justify-center gap-4 rounded-md bg-white p-4 shadow-md sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
                 <h1 className="text-2xl font-semibold text-secondary">Edit Product</h1>
               
-                <div className="flex gap-2">
+                <div className="flex w-full gap-2 sm:w-auto">
                     <Link
                     to="/admin/products" className="p-2 bg-red-600 text-white rounded-md hover:bg-red-700">Cancel</Link>
                     <button className="p-2 bg-green-600 text-white rounded-md cursor-pointer hover:bg-green-700" onClick={handleUpdate}>

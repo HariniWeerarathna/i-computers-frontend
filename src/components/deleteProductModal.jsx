@@ -27,7 +27,7 @@ export default function DeleteProductModal(props){ //child component - DeletePro
 	  }catch(error){
 	    console.log(error);
 	  }finally{
-        setShowModal(false);// 
+        setShowModal(false);
       }
 
 	}
@@ -37,29 +37,21 @@ export default function DeleteProductModal(props){ //child component - DeletePro
     return(
         <>
             <CiTrash
-                onClick={() => setShowModal(true)} // setShowModal(true) ---> model will be shown when the trash icon is clicked
-                className="hover:text-red-600 cursor-pointer"/>
+                onClick={() => setShowModal(true)}
+                className="cursor-pointer hover:text-red-600"/>
 
-
-            {showModal&&<div className="w-screen h-screen bg-black/50 flex justify-center items-center fixed left-0 top-0">
-
-
-                <div className="w-[400px] h-[200px] bg-white rounded-md shadow-md flex flex-col items-center justify-between gap-4 ">
-
-                    <div className="w-full h-[40px] bg-accent rounded-t-md flex items-center justify-between text-white">
-                        <h1 className="px-2">Delete Confimation</h1>
-                        <button onClick={() => setShowModal(false)} className="p-2 hover:text-red-600 cursor-pointer">X</button>  
+            {showModal&&<div className="fixed left-0 top-0 flex h-screen w-screen items-center justify-center bg-black/50">
+                <div className="flex h-[200px] w-[400px] flex-col items-center justify-between gap-4 rounded-md bg-white shadow-md">
+                    <div className="flex h-[40px] w-full items-center justify-between rounded-t-md bg-accent text-white">
+                        <h1 className="px-2">Delete Confirmation</h1>
+                        <button onClick={() => setShowModal(false)} className="cursor-pointer p-2 hover:text-red-600">X</button>
                     </div>
-
                     <p className="px-2">Are you sure you want to delete this product with ID {product.productId}?</p>
-
                     <div className="flex gap-2 pb-2">
-                        <button className="p-2 bg-red-600 text-white rounded-md hover:bg-red-700" onClick={() => setShowModal(false)}>Cancel</button>
-                        <button onClick={handleDelete} className="p-2 bg-green-600 text-white rounded-md cursor-pointer hover:bg-green-700">Confirm</button>
+                        <button className="rounded-md bg-red-600 p-2 text-white hover:bg-red-700" onClick={() => setShowModal(false)}>Cancel</button>
+                        <button onClick={handleDelete} className="cursor-pointer rounded-md bg-green-600 p-2 text-white hover:bg-green-700">Confirm</button>
                     </div>
-                </div>  
-
-
+                </div>
             </div>}
 
         </> // React Fragments(empty tag) - They let you return multiple elements without creating an extra <div>.
