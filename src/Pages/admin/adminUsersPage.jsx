@@ -29,14 +29,14 @@ export default function AdminUsersPage() {
     }, [isLoading]);
 
     return (
-        <div className="w-full max-h-full  flex flex-col p-4 items-start gap-0 overflow-y-scroll">
+        <div className="w-full max-h-full flex flex-col items-start gap-0 overflow-y-scroll p-3 sm:p-4">
             
 
-            <div className="w-full min-h-[100px] bg-white shadow-md rounded-md flex items-center p-4 justify-between mb-8">
+            <div className="mb-5 flex min-h-[100px] w-full flex-col justify-center gap-4 rounded-md bg-white p-4 shadow-md sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
                 {isLoading && <LoadingAnimation />}
                 <h1 className="text-2xl font-semibold text-secondary">Users</h1>
 
-                <div className="flex gap-4 justify-center items-center">
+                <div className="flex w-full items-center justify-between gap-4 sm:w-auto sm:justify-center">
                     <span>{totalUsers} Users</span>
                     <button
                         onClick={() => {
@@ -48,7 +48,8 @@ export default function AdminUsersPage() {
                     </button>
                 </div>
             </div>
-            <table className="w-full bg-white shadow-md rounded-md overflow-hidden text-center mb-[100px]">
+            <div className="mb-[100px] w-full overflow-x-auto rounded-md bg-white shadow-md">
+            <table className="min-w-[850px] w-full overflow-hidden text-center">
                 <thead className="bg-accent text-white h-[60px]">
                     <tr>
                         <th></th>
@@ -85,8 +86,9 @@ export default function AdminUsersPage() {
                     })}
                 </tbody>
             </table>
-            <div className="w-[calc(100%-360px)] h-[100px]  fixed bottom-10 flex justify-center items-center">
-               <div className="w-[500px] h-[50px] bg-white shadow-2xl rounded-md flex justify-between overflow-hidden">
+            </div>
+            <div className="fixed bottom-4 left-3 right-3 flex justify-center sm:left-[360px] sm:right-4 sm:bottom-10">
+               <div className="flex w-full max-w-[500px] flex-wrap justify-center overflow-hidden rounded-md bg-white shadow-2xl sm:h-[50px] sm:flex-nowrap sm:justify-between">
                     <button className="h-full px-4 hover:bg-accent hover:text-white text-accent transition-colors duration-300 cursor-pointer"
                         disabled={currentPage == 1}
                         onClick={

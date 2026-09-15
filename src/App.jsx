@@ -51,7 +51,8 @@ function App() {
             }>
 
                 <div className="w-full h-screen bg-primary"> {/* 1st Div  -->  h-screen */}
-                    <Toaster position="top-right" /> {/* for toast notifications */}
+                    <Toaster position="top-right" />
+                    <Toaster toasterId="delete-confirmations" position="top-center" containerStyle={{ top: "50%", transform: "translateY(-50%)" }} />
 
                     <Routes>
                         <Route path="/*" element={<HomePage />} />

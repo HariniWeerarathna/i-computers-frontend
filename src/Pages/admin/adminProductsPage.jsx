@@ -110,7 +110,7 @@ export default function AdminProductsPage(){//parent component - AdminProductsPa
         
 
   return(
-    <div className="w-full max-h-full flex flex-col p-4 items-start gap-0 overflow-y-scroll">
+    <div className="w-full max-h-full flex flex-col items-start gap-0 overflow-y-scroll p-3 sm:p-4">
 
             {
                 // products.map( // .map() works only on arrays - loop through an array and create a new array.(inside return)
@@ -127,12 +127,12 @@ export default function AdminProductsPage(){//parent component - AdminProductsPa
 				// )   
             }
 
-        <div className="w-full h-[100px] bg-white shadow-md rounded-md flex items-center p-4 justify-between mb-5">
+        <div className="mb-5 flex min-h-[100px] w-full flex-col justify-center gap-4 rounded-md bg-white p-4 shadow-md sm:flex-row sm:items-center sm:justify-between">
             {isLoading && <LoadingAnimation />}
             
-            <h1 className="text-2xl font-semibold text-secondary">Add Product</h1>  
+            <h1 className="text-2xl font-semibold text-secondary">Products</h1>  
             
-            <div className="flex gap-2 justify-center items-center">       
+            <div className="flex w-full items-center justify-between gap-2 sm:w-auto sm:justify-center">       
                 <span>{products.length} Products</span>
                 <button
                   onClick={() => {
@@ -151,7 +151,8 @@ export default function AdminProductsPage(){//parent component - AdminProductsPa
 
 
 
-        <table className="w-full bg-white shadow-md rounded-md overflow-hidden text-center ">
+        <div className="w-full overflow-x-auto rounded-md bg-white shadow-md">
+        <table className="min-w-[1050px] w-full overflow-hidden text-center">
             <thead className="bg-accent text-white h-[60px]">
                 <tr>
                     <th>Image</th>
@@ -206,10 +207,11 @@ export default function AdminProductsPage(){//parent component - AdminProductsPa
             );
             })}
             </tbody>
-	      </table>        
+	      </table>
+        </div>
             
 
-        <Link to="/admin/add-product" className="w-[80px] h-[80px] bg-accent text-white rounded-full text-2xl flex justify-center items-center fixed right-[35px] bottom-[35px]">
+        <Link to="/admin/add-product" className="fixed bottom-5 right-5 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-xl text-white shadow-lg sm:bottom-[35px] sm:right-[35px] sm:h-[80px] sm:w-[80px] sm:text-2xl">
             <FaPlus />
             </Link>             
     </div>

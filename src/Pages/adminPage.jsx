@@ -26,7 +26,7 @@ export default function AdminPage(){
     return(
         <div className="w-full h-full flex text-secondary">
 
-            <div className="w-[340px] h-full bg-white shadow-2xl relative z-10 flex flex-col">
+            <div className="relative z-10 hidden h-full w-[340px] flex-col bg-white shadow-2xl sm:flex">
                 <div className="w-full h-[60px] p-2 flex gap-2 items-end mb-2">
                     <img src="/logo.png" alt="logo" className=" h-full " />
                     <span className="text-2xl font-bold">Admin </span>
@@ -36,7 +36,7 @@ export default function AdminPage(){
                 <Link to="/admin/users" className="w-full flex items-center p-2 text-xl gap-2 mb-2 hover:bg-accent hover:text-white"><LuUsersRound className="text-3xl" /> Users</Link>
                 <Link to="/admin/reviews" className="w-full flex items-center p-2 text-xl gap-2 mb-2 hover:bg-accent hover:text-white"><LuMessageSquareText className="text-3xl" /> Reviews</Link>
             </div>
-            <div className="w-[calc(100%-340px)]  h-full bg-primary">
+            <div className="h-full w-full bg-primary pb-20 sm:w-[calc(100%-340px)] sm:pb-0">
 
                 <Routes>
                     <Route path="/" element={<AdminOrdersPage />} />
@@ -48,6 +48,12 @@ export default function AdminPage(){
                 </Routes>
 
             </div>
+            <nav className="fixed inset-x-0 bottom-0 z-20 flex h-16 items-center justify-around border-t border-slate-200 bg-white px-2 shadow-lg sm:hidden" aria-label="Admin navigation">
+                <Link to="/admin" className="flex min-w-14 flex-col items-center gap-0.5 text-xs font-medium text-accent"><BsCart2 className="text-xl" />Orders</Link>
+                <Link to="/admin/products" className="flex min-w-14 flex-col items-center gap-0.5 text-xs font-medium text-accent"><BsBox className="text-xl" />Products</Link>
+                <Link to="/admin/users" className="flex min-w-14 flex-col items-center gap-0.5 text-xs font-medium text-accent"><LuUsersRound className="text-xl" />Users</Link>
+                <Link to="/admin/reviews" className="flex min-w-14 flex-col items-center gap-0.5 text-xs font-medium text-accent"><LuMessageSquareText className="text-xl" />Reviews</Link>
+            </nav>
         </div>
     )
 }
