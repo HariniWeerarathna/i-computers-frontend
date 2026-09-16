@@ -11,6 +11,8 @@ import AdminReviewsPage from "./admin/adminReviewsPage";
 import AdminAboutPage from "./admin/adminAboutPage";
 import { useContext, useEffect } from "react";
 import UserContext from "../context/userContext";
+import NotificationBell from "../components/notificationBell";
+import NotificationsPage from "./notificationsPage";
 
 
 export default function AdminPage(){
@@ -32,6 +34,7 @@ export default function AdminPage(){
                 <div className="w-full h-[60px] p-2 flex gap-2 items-end mb-2">
                     <img src="/logo.png" alt="logo" className=" h-full " />
                     <span className="text-2xl font-bold">Admin </span>
+                    <div className="ml-auto self-center text-secondary"><NotificationBell buttonClassName="hover:bg-slate-100" notificationPagePath="/admin/notifications" notificationTypes={["new-order"]} autoOpenModal buttonDestination="/admin/notifications" /></div>
                 </div>
                 <Link to="/admin" className="w-full flex items-center p-2 text-xl gap-2 mb-2 hover:bg-accent hover:text-white"><BsCart2 className="text-3xl" /> Orders</Link>
                 <Link to="/admin/products" className="w-full flex items-center p-2 text-xl gap-2 mb-2 hover:bg-accent hover:text-white"><BsBox className="text-3xl" /> Products</Link>
@@ -49,6 +52,7 @@ export default function AdminPage(){
                     <Route path="/users" element={<AdminUsersPage />} />
                     <Route path="/reviews" element={<AdminReviewsPage />} />
                     <Route path="/about" element={<AdminAboutPage />} />
+                    <Route path="/notifications" element={<NotificationsPage admin notificationTypes={["new-order"]} />} />
                     <Route path="/add-product" element={<AddProductForm/>}/>
                     <Route path="/edit-product" element={<EditProductForm/>}/>
                 </Routes>
@@ -56,6 +60,7 @@ export default function AdminPage(){
 
             </div>
             <nav className="fixed inset-x-0 bottom-0 z-20 flex h-16 items-center justify-around border-t border-slate-200 bg-white px-1 shadow-lg sm:hidden" aria-label="Admin navigation">
+                <Link to="/admin/notifications" className="relative flex min-w-0 flex-1 flex-col items-center text-accent"><FiFileText className="text-xl" /><span className="text-[10px] font-medium">Alerts</span></Link>
                 <Link to="/admin" className="flex min-w-0 flex-1 flex-col items-center gap-0.5 text-[10px] font-medium text-accent"><BsCart2 className="text-xl" />Orders</Link>
                 <Link to="/admin/products" className="flex min-w-0 flex-1 flex-col items-center gap-0.5 text-[10px] font-medium text-accent"><BsBox className="text-xl" />Products</Link>
                 <Link to="/admin/users" className="flex min-w-0 flex-1 flex-col items-center gap-0.5 text-[10px] font-medium text-accent"><LuUsersRound className="text-xl" />Users</Link>
@@ -63,6 +68,9 @@ export default function AdminPage(){
                 <Link to="/admin/about" className="flex min-w-0 flex-1 flex-col items-center gap-0.5 text-[10px] font-medium text-accent"><FiFileText className="text-xl" />About</Link>
                 <Link to="/" className="flex min-w-0 flex-1 flex-col items-center gap-0.5 text-[10px] font-medium text-accent"><FiHome className="text-xl" />Home</Link>
             </nav>
+            <div className="sm:hidden">
+                <NotificationBell hideButton notificationPagePath="/admin/notifications" notificationTypes={["new-order"]} autoOpenModal />
+            </div>
         </div>
     )
 }

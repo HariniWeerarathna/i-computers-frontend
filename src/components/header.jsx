@@ -3,8 +3,9 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { PiShoppingCartSimpleLight } from "react-icons/pi";
 import { useContext } from "react";
 import UserContext from "../context/userContext";
-import { CiBoxList, CiHome, CiShoppingCart } from "react-icons/ci";
-import { FiInfo, FiLogOut, FiPackage, FiSettings, FiStar, FiUser } from "react-icons/fi";
+import { CiBoxList, CiShoppingCart } from "react-icons/ci";
+import { FiHome, FiInfo, FiLogOut, FiPackage, FiSettings, FiStar, FiUser } from "react-icons/fi";
+import NotificationBell from "./notificationBell";
 
 
 export default function Header(){
@@ -12,7 +13,7 @@ export default function Header(){
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
     const desktopLinkClass = ({ isActive }) => `h-full flex items-center px-4 transition-colors hover:bg-accent-dark ${isActive ? "bg-accent-dark font-semibold" : ""}`;
-    const mobileLinkClass = ({ isActive }) => `relative h-full min-w-0 flex-1 flex flex-col items-center justify-center gap-0.5 text-[10px] font-medium transition-colors ${isActive ? "text-accent" : "text-slate-500"}`;
+    const mobileLinkClass = ({ isActive }) => `relative h-full min-w-0 flex-1 flex flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition-colors ${isActive ? "text-accent" : "text-slate-700"}`;
     function closeMenu() {
         setMobileMenuOpen(false);
     }
@@ -37,16 +38,20 @@ export default function Header(){
                     <NavLink to="/products" className={desktopLinkClass}>Products</NavLink>
                     <NavLink to="/about" className={desktopLinkClass}>About us</NavLink>
                     <NavLink to="/reviews" className={desktopLinkClass}>Reviews</NavLink>
-                    {user?.isAdmin && <NavLink to="/admin" className={desktopLinkClass}>Admin</NavLink>}
                 </div>
 
                 <div className="h-full hidden lg:flex items-center justify-between gap-6">
+                    <NotificationBell buttonClassName="text-white" showViewAll={false} notificationTypes={["new-product"]} autoClearReadAt={user?.isAdmin ? undefined : 5} />
                     <Link to="/cart">
                         <PiShoppingCartSimpleLight className="text-white text-4xl" />
                     </Link>
                     <button onClick={(event) => { event.stopPropagation(); setMobileMenuOpen((isOpen) => !isOpen); }} className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border-2 border-white/70 bg-white/15 shadow-sm" aria-label="Open account menu" aria-expanded={mobileMenuOpen}>
                         {user?.image ? <img src={user.image} alt="Your profile" className="h-full w-full object-cover" /> : <FiUser className="text-2xl text-white" />}
                     </button>
+                </div>
+
+                <div className="absolute left-4 top-6 lg:hidden">
+                    <NotificationBell buttonClassName="text-white" showViewAll={false} notificationTypes={["new-product"]} autoClearReadAt={user?.isAdmin ? undefined : 5} />
                 </div>
 
                 <button onClick={(event) => { event.stopPropagation(); setMobileMenuOpen((isOpen) => !isOpen); }} className="absolute right-4 top-6 flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border-2 border-white/70 bg-white/15 shadow-sm lg:hidden" aria-label="Open account menu" aria-expanded={mobileMenuOpen}>
@@ -82,10 +87,10 @@ export default function Header(){
             {mobileMenuOpen && <button className="fixed inset-0 z-40 cursor-default" onClick={closeMenu} aria-label="Close account menu" />}
 
 
-            <nav className="fixed inset-x-0 bottom-0 z-30 flex h-[76px] items-stretch border-t border-slate-200 bg-white/95 px-1 shadow-[0_-8px_24px_rgba(15,23,42,0.12)] backdrop-blur lg:hidden" aria-label="Main navigation">
+            <nav className="fixed inset-x-0 bottom-0 z-30 flex h-[76px] items-stretch border-t border-slate-300 bg-slate-50/95 px-1 shadow-[0_-8px_24px_rgba(15,23,42,0.18)] backdrop-blur lg:hidden" aria-label="Main navigation">
                 
                 <NavLink end className={mobileLinkClass} to="/">
-                    <CiHome className="text-[28px]" />
+                    <FiHome className="text-[25px]" />
                     <span>Home</span>
                 </NavLink>
 

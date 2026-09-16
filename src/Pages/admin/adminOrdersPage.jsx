@@ -12,24 +12,19 @@ export default function AdminOrdersPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [totalOrders, setTotalOrders] = useState(0);
+    const [refreshKey, setRefreshKey] = useState(0);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
-
-        api.get("/orders/"+pageSize+"/"+currentPage, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }).then((response) => {
-            if (isLoading) {
-                console.log(response.data);
+        api.get("/orders/"+pageSize+"/"+currentPage, { headers: { Authorization: `Bearer ${token}` } })
+            .then((response) => {
                 setOrders(response.data.orders);
                 setTotalPages(response.data.totalPages);
                 setTotalOrders(response.data.totalCount);
-                setIsLoading(false);
-            }
-        });
-    }, [isLoading]);
+            })
+            .catch(() => setOrders([]))
+            .finally(() => setIsLoading(false));
+    }, [pageSize, currentPage, refreshKey]);
 
 
    
@@ -47,6 +42,7 @@ export default function AdminOrdersPage() {
                     <button
                         onClick={() => {
                             setIsLoading(true);
+                            setRefreshKey((key) => key + 1);
                         }}
                         className="bg-accent text-white px-4 py-2 rounded-md"
                     >
@@ -89,7 +85,7 @@ export default function AdminOrdersPage() {
                                 <td>{getFormattedPrice(item.totalAmount)}</td>
                                 <td>
                                     <div className="flex justify-center items-center gap-2">
-                                        <AdminOrderDetailsModal order={item} refresh={() => setIsLoading(true)} />
+                                        <AdminOrderDetailsModal order={item} refresh={() => { setIsLoading(true); setRefreshKey((key) => key + 1); }} />
                                     </div>
                                     
                                 </td>
@@ -99,27 +95,29 @@ export default function AdminOrdersPage() {
                 </tbody>
             </table>
             </div>
-            <div className="fixed bottom-4 left-3 right-3 flex justify-center sm:left-[360px] sm:right-4 sm:bottom-10">
-               <div className="flex w-full max-w-[500px] flex-wrap justify-center overflow-hidden rounded-md bg-white shadow-2xl sm:h-[50px] sm:flex-nowrap sm:justify-between">
-                    <button className="h-full px-4 hover:bg-accent hover:text-white text-accent transition-colors duration-300 cursor-pointer"
-                        disabled={currentPage == 1}
+            <div className="fixed bottom-20 left-3 right-3 z-10 flex justify-center sm:bottom-8 sm:left-[360px] sm:right-4">
+               <div className="grid w-full max-w-[560px] grid-cols-2 gap-1 rounded-xl bg-white p-1.5 shadow-2xl sm:flex sm:h-[52px] sm:items-stretch sm:justify-between">
+                    <div className="col-span-2 flex items-center justify-center rounded-lg bg-slate-50 px-3 py-2 text-sm font-semibold text-secondary sm:order-2 sm:col-span-1 sm:bg-transparent sm:py-0">
+                        Page {currentPage} of {totalPages}
+                    </div>
+                    <button className="rounded-lg px-3 py-2 text-sm font-semibold text-accent transition-colors hover:bg-accent hover:text-white disabled:cursor-not-allowed disabled:opacity-40 sm:order-1"
+                        disabled={currentPage === 1}
                         onClick={
                             ()=>{
-
-                                const newPageNumber = currentPage - 1
-                                setCurrentPage(newPageNumber)
                                 setIsLoading(true)
+                                setCurrentPage((page) => page - 1)
                             }
                         }>
-                        &lt;&lt; Previous
+                        ← Previous
                     </button>
-                    <div className="h-full text-accent flex justify-center items-center gap-1">
-                        <label htmlFor="pageSize">Page Size:</label>
-                        <select className="h-full hover:bg-accent hover:text-white text-accent transition-colors duration-300 cursor-pointer"
+                    <div className="flex items-center justify-center gap-1 rounded-lg px-2 text-sm font-semibold text-accent sm:order-3">
+                        <label htmlFor="pageSize">Rows:</label>
+                        <select id="pageSize" className="rounded-md border border-slate-200 bg-white px-1.5 py-1 text-accent outline-none focus:border-accent"
                             value={pageSize}
                             onChange={(e) => {
-                                setPageSize(e.target.value);
                                 setIsLoading(true);
+                                setPageSize(Number(e.target.value));
+                                setCurrentPage(1);
                             }
                         }>
                             <option value={3}>3</option>
@@ -128,19 +126,14 @@ export default function AdminOrdersPage() {
                         </select>
                     </div>
 
-                    <div className="h-full px-4 hover:bg-accent hover:text-white text-accent transition-colors duration-300 cursor-pointer flex justify-center items-center gap-2">
-                        <span>Page {currentPage} of {totalPages}</span>
-                    </div>
-                    
                     <button
-                        disabled={currentPage == totalPages}
+                        disabled={currentPage >= totalPages}
                         onClick={()=>{
-                            const newPageNumber = currentPage + 1
-                            setCurrentPage(newPageNumber)
                             setIsLoading(true)
+                            setCurrentPage((page) => page + 1)
                         }}
-                    className="h-full px-4 hover:bg-accent hover:text-white text-accent transition-colors duration-300 cursor-pointer" >
-                      Next &gt;&gt;
+                    className="rounded-lg px-3 py-2 text-sm font-semibold text-accent transition-colors hover:bg-accent hover:text-white disabled:cursor-not-allowed disabled:opacity-40 sm:order-4" >
+                      Next →
                     </button>
                </div>
             </div>

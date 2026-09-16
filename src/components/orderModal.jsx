@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import Modal from 'react-modal';
-import { getCartTotal } from '../lib/cart';
+import { clearCart, getCartTotal } from '../lib/cart';
 import getFormattedPrice from '../lib/price-format';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -60,9 +60,10 @@ export default function OrderModal(props){
                     Authorization : `Bearer ${token}`
                 }
             })
+            clearCart()
             toast.success("Order placed successfully")
             setModalIsOpen(false)
-            navigate("/products")
+            navigate("/products", { replace: true })
 
         }catch(err){
             console.log(err)

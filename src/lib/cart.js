@@ -95,3 +95,7 @@ export function getCartTotal(cart){
     }
     return total
 }
+
+export function clearCart(){
+    localStorage.setItem("cart", "[]")
+}
