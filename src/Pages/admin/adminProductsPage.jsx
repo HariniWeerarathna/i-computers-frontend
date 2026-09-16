@@ -1,11 +1,10 @@
 import { FaPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { CiEdit, CiTrash } from "react-icons/ci";
+import { CiEdit } from "react-icons/ci";
 import api from "../../lib/api";
 import LoadingAnimation from "../../components/loadingAnimation";
 import DeleteProductModal from "../../components/deleteProductModal";
-import editProductForm from "./adminEditProductForm";
 
 export default function AdminProductsPage(){//parent component - AdminProductsPage is the parent component of DeleteProductModal
   
@@ -211,8 +210,9 @@ export default function AdminProductsPage(){//parent component - AdminProductsPa
         </div>
             
 
-        <Link to="/admin/add-product" className="fixed bottom-5 right-5 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-xl text-white shadow-lg sm:bottom-[35px] sm:right-[35px] sm:h-[80px] sm:w-[80px] sm:text-2xl">
+        <Link to="/admin/add-product" className="fixed bottom-20 right-4 z-30 flex h-12 items-center justify-center gap-2 rounded-full bg-accent px-4 text-sm font-semibold text-white shadow-lg transition hover:bg-blue-900 sm:bottom-[35px] sm:right-[35px] sm:h-[80px] sm:w-[80px] sm:px-0 sm:text-2xl" aria-label="Add product">
             <FaPlus />
+            <span className="sm:hidden">Add product</span>
             </Link>             
     </div>
   )

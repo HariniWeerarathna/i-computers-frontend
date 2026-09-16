@@ -4,7 +4,6 @@ import { getCartTotal } from '../lib/cart';
 import getFormattedPrice from '../lib/price-format';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import uploadMedia from '../lib/uploadMedia';
 import api from '../lib/api';
 import UserContext from '../context/userContext';
 
@@ -83,137 +82,122 @@ export default function OrderModal(props){
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={()=>{setModalIsOpen(false)}}
+                className="mx-auto my-3 max-h-[calc(100vh-1.5rem)] w-[calc(100%-1rem)] max-w-3xl overflow-y-auto rounded-2xl bg-primary shadow-2xl outline-none sm:my-8 sm:w-[calc(100%-2rem)]"
+                overlayClassName="fixed inset-0 z-50 overflow-y-auto bg-slate-950/55 px-2 backdrop-blur-sm"
                 style={ 
                     {
                         content : {
-                            margin : 'auto',
                             padding : '0px',
-                            paddingBottom : '0px',
                             backgroundColor : 'transparent',
                             border : 'none'
                         }
                     }
                 }
             >
-                <div className='w-full min-h-full bg-primary rounded-2xl flex flex-col z-50'>
-                    <div className='w-full h-[70px] bg-accent rounded-t-2xl flex'>
-                            {/*  order summary*/}
-                            <div className='w-full h-full flex flex-col justify-center items-center'>
-                                <h1 className='text-xl font-semibold text-white'>Order Summary</h1>
-                            </div>
+                <div className='overflow-hidden rounded-2xl bg-white text-secondary'>
+                    <div className='bg-accent px-5 py-5 text-white sm:px-7'>
+                        <p className='text-xs font-semibold uppercase tracking-[0.18em] text-blue-100'>Checkout</p>
+                        <h1 className='mt-1 text-2xl font-bold'>Order summary</h1>
                     </div>
 
-                    {/* total */}
-                    <div className='w-full h-[70px] bg-[#7979b8]  flex sticky top-0'>
-                            <div className='w-1/2 h-full  flex flex-row justify-center items-center gap-2'>
-                                <h1 className='text-lg font-semibold text-white'>Total : </h1>
-                                <span className='text-lg font-semibold text-white'>{getFormattedPrice(getCartTotal(props.cart))}</span>                            
-                            </div>
-                            <div className='w-1/2 h-full  flex flex-row justify-center items-center gap-2'>
-                                <h1 className='text-lg font-semibold text-white'>Items : </h1>
-                                <span className='text-lg font-semibold text-white'>{props.cart.length}</span>
-                            </div>                           
+                    <div className='grid grid-cols-2 divide-x divide-indigo-200 bg-indigo-50 text-center'>
+                        <div className='p-4'>
+                            <p className='text-xs font-medium uppercase tracking-wide text-slate-500'>Total</p>
+                            <p className='mt-1 text-lg font-bold text-accent'>{getFormattedPrice(getCartTotal(props.cart))}</p>
+                        </div>
+                        <div className='p-4'>
+                            <p className='text-xs font-medium uppercase tracking-wide text-slate-500'>Items</p>
+                            <p className='mt-1 text-lg font-bold text-accent'>{props.cart.length}</p>
+                        </div>
                     </div>
 
-                        <div className='w-full  flex flex-row flex-wrap text-secondary'>                            
-                            <div className='w-1/2 h-[100px]  flex flex-col justify-center p-4'>
-                                <label className="">First Name</label>
+                    <div className='grid gap-4 p-5 sm:grid-cols-2 sm:p-7'>
+                            <div className='flex flex-col gap-1.5'>
+                                <label className="text-sm font-medium">First name</label>
                                 <input
                                 value={firstName}
                                 onChange={(e)=>{setFirstName(e.target.value)}}
                                 placeholder='John'
-                                className='w-full h-[40px] rounded-md outline-0 border-gray-500 border px-2 text-black'
+                                className='h-11 w-full rounded-lg border border-slate-300 px-3 text-black outline-none transition focus:border-accent focus:ring-2 focus:ring-blue-100'
                                 />
                             </div>
-                            <div className='w-1/2 h-[100px]  flex flex-col justify-center p-4'>
-                                <label className="">Last Name</label>
+                            <div className='flex flex-col gap-1.5'>
+                                <label className="text-sm font-medium">Last name</label>
                                 <input
                                 value={lastName}
                                 onChange={(e)=>{setLastName(e.target.value)}}
                                 placeholder='Doe'
-                                className='w-full h-[40px] rounded-md outline-0 border-gray-500 border px-2 text-black'
+                                className='h-11 w-full rounded-lg border border-slate-300 px-3 text-black outline-none transition focus:border-accent focus:ring-2 focus:ring-blue-100'
                                 />
                             </div>
-                            <div className='w-full h-[100px] flex flex-col justify-center p-4'>
-                                <label className="">Address Line 1</label>
+                            <div className='flex flex-col gap-1.5 sm:col-span-2'>
+                                <label className="text-sm font-medium">Address line 1</label>
                                 <input
                                 value={addressLine1}
                                 onChange={(e)=>{setAddressLine1(e.target.value)}}
                                 placeholder='123 Main St'
-                                className='w-full h-[40px] rounded-md outline-0 border-gray-500 border px-2 text-black'
+                                className='h-11 w-full rounded-lg border border-slate-300 px-3 text-black outline-none transition focus:border-accent focus:ring-2 focus:ring-blue-100'
                                 />
                             </div>
-                            <div className='w-full h-[100px] flex flex-col justify-center p-4'>
-                                <label className="">Address Line 2</label>
+                            <div className='flex flex-col gap-1.5 sm:col-span-2'>
+                                <label className="text-sm font-medium">Address line 2 <span className="font-normal text-slate-400">(optional)</span></label>
                                 <input
                                 value={addressLine2}
                                 onChange={(e)=>{setAddressLine2(e.target.value)}}
                                 placeholder='Apt 4B'
-                                className='w-full h-[40px] rounded-md outline-0 border-gray-500 border px-2 text-black'
+                                className='h-11 w-full rounded-lg border border-slate-300 px-3 text-black outline-none transition focus:border-accent focus:ring-2 focus:ring-blue-100'
                                 />
                             </div>
-                            <div className='w-1/2 h-[100px]  flex flex-col justify-center p-4'>
-                                <label className="">City</label>
+                            <div className='flex flex-col gap-1.5'>
+                                <label className="text-sm font-medium">City</label>
                                 <input
                                 value={city}
                                 onChange={(e)=>{setCity(e.target.value)}}
                                 placeholder='Colombo'
-                                className='w-full h-[40px] rounded-md outline-0 border-gray-500 border px-2 text-black'
+                                className='h-11 w-full rounded-lg border border-slate-300 px-3 text-black outline-none transition focus:border-accent focus:ring-2 focus:ring-blue-100'
                                 />
                             </div>
-                            <div className='w-1/2 h-[100px]  flex flex-col justify-center p-4'>
-                                <label className="">Postal Code</label>
+                            <div className='flex flex-col gap-1.5'>
+                                <label className="text-sm font-medium">Postal code</label>
                                 <input
                                 value={postalCode}
                                 onChange={(e)=>{setPostalCode(e.target.value)}}
                                 placeholder='12345'
-                                className='w-full h-[40px] rounded-md outline-0 border-gray-500 border px-2 text-black'
+                                className='h-11 w-full rounded-lg border border-slate-300 px-3 text-black outline-none transition focus:border-accent focus:ring-2 focus:ring-blue-100'
                                 />
                             </div>
-                            <div className='w-1/2 h-[100px]  flex flex-col justify-center p-4'>
-                                <label className="">Phone</label>
+                            <div className='flex flex-col gap-1.5'>
+                                <label className="text-sm font-medium">Phone</label>
                                 <input
                                 value={phoneNumber}
                                 onChange={(e)=>{setPhoneNumber(e.target.value)}}
                                 placeholder='+94 123 456 789'
-                                className='w-full h-[40px] rounded-md outline-0 border-gray-500 border px-2 text-black'
+                                className='h-11 w-full rounded-lg border border-slate-300 px-3 text-black outline-none transition focus:border-accent focus:ring-2 focus:ring-blue-100'
                                 />
                             </div>
-                            <div className='w-1/2 h-[100px]  flex flex-col justify-center p-4'>
-                                <label className="">Secondary Phone</label>
+                            <div className='flex flex-col gap-1.5'>
+                                <label className="text-sm font-medium">Secondary phone <span className="font-normal text-slate-400">(optional)</span></label>
                                 <input
                                 value={secondaryPhoneNumber}
                                 onChange={(e)=>{setSecondaryPhoneNumber(e.target.value)}}
                                 placeholder='+94 987 654 321'
-                                className='w-full h-[40px] rounded-md outline-0 border-gray-500 border px-2 text-black'
+                                className='h-11 w-full rounded-lg border border-slate-300 px-3 text-black outline-none transition focus:border-accent focus:ring-2 focus:ring-blue-100'
                                 />
                             </div>
-                           
-                            
-                            <div className='w-full h-[150px] flex flex-col justify-center p-4'>
-                                <label className="">Special Notes</label>
+                            <div className='flex flex-col gap-1.5 sm:col-span-2'>
+                                <label className="text-sm font-medium">Special notes <span className="font-normal text-slate-400">(optional)</span></label>
                                 <textarea
                                 value={specialNotes}
                                 onChange={(e)=>{setSpecialNotes(e.target.value)}}
                                 placeholder='Any special instructions for delivery...'
-                                className='w-full h-[100px] rounded-md outline-0 border-gray-500 border px-2 text-black'
+                                className='min-h-28 w-full resize-y rounded-lg border border-slate-300 px-3 py-2 text-black outline-none transition focus:border-accent focus:ring-2 focus:ring-blue-100'
                                 />
                             </div>
-
-                            {/* <div className='w-full h-[150px] flex flex-col justify-center p-4'>
-                                <label className="">Bank Slip</label>
-                                <input
-                                type='file'
-                                onChange={(e)=>{setFile(e.target.files[0])}}
-                                className='w-full h-[40px] rounded-md outline-0 border-gray-500 border px-2 text-black'
-                                /> 
-                            </div> */}
-
-
-                        <div className='w-full sticky bottom-0 h-[70px] bg-[#7979b8] rounded-b-2xl flex flex-row justify-center items-center gap-2 z-50 mb-[80px] lg:mb-0'>
+                    </div>
+                        <div className='flex flex-col-reverse gap-3 border-t border-slate-200 bg-slate-50 p-5 sm:flex-row sm:justify-end sm:px-7'>
                             <button
                             onClick={handleConfirmOrder}
-                            className='bg-accent/75 hover:bg-accent cursor-pointer transition-colors duration-300 text-white px-4 py-2 rounded-md font-semibold'>
+                            className='rounded-lg bg-accent px-5 py-2.5 font-semibold text-white transition-colors hover:bg-blue-900'>
                                 Confirm Order
                             </button>
 
@@ -222,12 +206,11 @@ export default function OrderModal(props){
                             onClick={()=>{
                                 setModalIsOpen(false)
                             }}
-                            className='bg-gray-500/75 hover:bg-gray-500 cursor-pointer transition-colors duration-300 text-white px-4 py-2 rounded-md font-semibold'>
+                            className='rounded-lg border border-slate-300 px-5 py-2.5 font-semibold text-slate-700 transition-colors hover:bg-slate-100'>
                                 Cancel
                             </button>             
                         </div>
 
-                    </div>
                 </div>  
             </Modal>
         </>

@@ -26,7 +26,7 @@ export default function AdminUsersPage() {
                 setIsLoading(false);
             }
         });
-    }, [isLoading]);
+    }, [isLoading, currentPage, pageSize]);
 
     return (
         <div className="w-full max-h-full flex flex-col items-start gap-0 overflow-y-scroll p-3 sm:p-4">
@@ -87,9 +87,9 @@ export default function AdminUsersPage() {
                 </tbody>
             </table>
             </div>
-            <div className="fixed bottom-4 left-3 right-3 flex justify-center sm:left-[360px] sm:right-4 sm:bottom-10">
-               <div className="flex w-full max-w-[500px] flex-wrap justify-center overflow-hidden rounded-md bg-white shadow-2xl sm:h-[50px] sm:flex-nowrap sm:justify-between">
-                    <button className="h-full px-4 hover:bg-accent hover:text-white text-accent transition-colors duration-300 cursor-pointer"
+            <div className="sticky bottom-3 z-10 mt-auto w-full px-1 sm:fixed sm:bottom-10 sm:left-[360px] sm:right-4 sm:w-auto">
+               <div className="mx-auto grid w-full max-w-[500px] grid-cols-2 overflow-hidden rounded-xl bg-white text-sm shadow-2xl sm:flex sm:h-[50px] sm:flex-nowrap sm:justify-between">
+                    <button className="min-h-11 px-3 text-accent transition-colors hover:bg-accent hover:text-white disabled:cursor-not-allowed disabled:opacity-40 sm:h-full sm:px-4"
                         disabled={currentPage == 1}
                         onClick={
                             ()=>{
@@ -99,11 +99,11 @@ export default function AdminUsersPage() {
                                 setIsLoading(true)
                             }
                         }>
-                        &lt;&lt; Previous
+                        Previous
                     </button>
-                    <div className="h-full text-accent flex justify-center items-center gap-1">
-                        <label htmlFor="pageSize">Page Size:</label>
-                        <select className="h-full hover:bg-accent hover:text-white text-accent transition-colors duration-300 cursor-pointer"
+                    <div className="flex min-h-11 items-center justify-center gap-1 text-accent sm:h-full">
+                        <label htmlFor="pageSize">Size</label>
+                        <select id="pageSize" className="rounded border border-slate-200 bg-white px-1 py-1 text-accent outline-none sm:h-full sm:border-0"
                             value={pageSize}
                             onChange={(e) => {
                                 setPageSize(e.target.value);
@@ -116,7 +116,7 @@ export default function AdminUsersPage() {
                         </select>
                     </div>
 
-                    <div className="h-full px-4 hover:bg-accent hover:text-white text-accent transition-colors duration-300 cursor-pointer flex justify-center items-center gap-2">
+                    <div className="flex min-h-11 items-center justify-center px-3 text-accent sm:h-full sm:px-4">
                         <span>Page {currentPage} of {totalPages}</span>
                     </div>
                     
@@ -127,8 +127,8 @@ export default function AdminUsersPage() {
                             setCurrentPage(newPageNumber)
                             setIsLoading(true)
                         }}
-                    className="h-full px-4 hover:bg-accent hover:text-white text-accent transition-colors duration-300 cursor-pointer" >
-                      Next &gt;&gt;
+                    className="min-h-11 px-3 text-accent transition-colors hover:bg-accent hover:text-white disabled:cursor-not-allowed disabled:opacity-40 sm:h-full sm:px-4" >
+                      Next
                     </button>
                </div>
             </div>

@@ -8,7 +8,7 @@ import { BiCategory } from "react-icons/bi";
 import { FaAngleRight } from "react-icons/fa";
 import { HiOutlineBadgeCheck } from "react-icons/hi";
 import getFormattedPrice from "../lib/price-format";
-import { addToCart } from "../lib/cart";
+import { addToCart, getCart } from "../lib/cart";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -97,6 +97,7 @@ export default function ProductOverview(){
                                 ()=>{
                                     addToCart(product,1);
                                     toast.success("Product added to cart");
+                                    navigate("/checkout", { state: getCart() });
                                 }
                             }>Add to Cart</button>
 

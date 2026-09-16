@@ -1,17 +1,31 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { PiShoppingCartSimpleLight } from "react-icons/pi";
-import UserData from "./userData";
-import { CiBoxList, CiHome, CiPhone, CiShoppingCart } from "react-icons/ci";
-import { FiMenu, FiX } from "react-icons/fi";
+import { useContext } from "react";
+import UserContext from "../context/userContext";
+import { CiBoxList, CiHome, CiShoppingCart } from "react-icons/ci";
+import { FiInfo, FiLogOut, FiPackage, FiSettings, FiStar, FiUser } from "react-icons/fi";
 
 
 export default function Header(){
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const { user } = useContext(UserContext);
+    const navigate = useNavigate();
+    const desktopLinkClass = ({ isActive }) => `h-full flex items-center px-4 transition-colors hover:bg-accent-dark ${isActive ? "bg-accent-dark font-semibold" : ""}`;
+    const mobileLinkClass = ({ isActive }) => `relative h-full min-w-0 flex-1 flex flex-col items-center justify-center gap-0.5 text-[10px] font-medium transition-colors ${isActive ? "text-accent" : "text-slate-500"}`;
+    function closeMenu() {
+        setMobileMenuOpen(false);
+    }
+
+    function logout() {
+        localStorage.removeItem("token");
+        closeMenu();
+        navigate("/login");
+    }
     
     return(
         <>
-            <header className="relative w-full h-[100px] bg-accent flex p-4 justify-center lg:justify-between">
+            <header onClick={mobileMenuOpen ? closeMenu : undefined} className="relative z-50 w-full h-[100px] bg-accent flex p-4 justify-center lg:justify-between">
                 
                 <Link to="/" className="h-full">
                     <img src="/logo-white.png" referrerPolicy="no-referrer" alt="Logo" className="h-full"/>
@@ -19,57 +33,82 @@ export default function Header(){
 
                 <div className="h-full text-primary hidden lg:flex items-center">
    
-                    <Link to="/" className="h-full flex items-center px-4 hover:bg-accent-dark">Home</Link>
-                    <Link to="/products" className="h-full flex items-center px-4 hover:bg-accent-dark">Products</Link>
-                    <Link to="/about" className="h-full flex items-center px-4 hover:bg-accent-dark">About</Link>
-                    <Link to="/reviews" className="h-full flex items-center px-4 hover:bg-accent-dark">Reviews</Link>
+                    <NavLink to="/" end className={desktopLinkClass}>Home</NavLink>
+                    <NavLink to="/products" className={desktopLinkClass}>Products</NavLink>
+                    <NavLink to="/about" className={desktopLinkClass}>About us</NavLink>
+                    <NavLink to="/reviews" className={desktopLinkClass}>Reviews</NavLink>
+                    {user?.isAdmin && <NavLink to="/admin" className={desktopLinkClass}>Admin</NavLink>}
                 </div>
 
                 <div className="h-full hidden lg:flex items-center justify-between gap-6">
                     <Link to="/cart">
                         <PiShoppingCartSimpleLight className="text-white text-4xl" />
                     </Link>
-                    <UserData />
+                    <button onClick={(event) => { event.stopPropagation(); setMobileMenuOpen((isOpen) => !isOpen); }} className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border-2 border-white/70 bg-white/15 shadow-sm" aria-label="Open account menu" aria-expanded={mobileMenuOpen}>
+                        {user?.image ? <img src={user.image} alt="Your profile" className="h-full w-full object-cover" /> : <FiUser className="text-2xl text-white" />}
+                    </button>
                 </div>
 
-                <button onClick={() => setMobileMenuOpen((isOpen) => !isOpen)} className="absolute right-4 top-7 flex items-center gap-1 rounded-md px-2 py-2 text-white lg:hidden" aria-label="Open navigation menu" aria-expanded={mobileMenuOpen}>
-                    {mobileMenuOpen ? <FiX className="text-2xl" /> : <FiMenu className="text-2xl" />}
+                <button onClick={(event) => { event.stopPropagation(); setMobileMenuOpen((isOpen) => !isOpen); }} className="absolute right-4 top-6 flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border-2 border-white/70 bg-white/15 shadow-sm lg:hidden" aria-label="Open account menu" aria-expanded={mobileMenuOpen}>
+                    {user?.image ? <img src={user.image} alt="Your profile" className="h-full w-full object-cover" /> : <FiUser className="text-2xl text-white" />}
                 </button>
 
                 {mobileMenuOpen && (
-                    <nav className="absolute right-4 top-[88px] z-40 w-48 rounded-lg bg-white py-2 shadow-xl lg:hidden">
-                        <Link onClick={() => setMobileMenuOpen(false)} to="/about" className="block px-5 py-3 font-medium text-accent hover:bg-slate-100">About</Link>
-                        <Link onClick={() => setMobileMenuOpen(false)} to="/reviews" className="block px-5 py-3 font-medium text-accent hover:bg-slate-100">Reviews</Link>
+                    <nav onClick={(event) => event.stopPropagation()} className="absolute right-3 top-[88px] z-50 w-56 overflow-hidden rounded-2xl border border-slate-100 bg-white p-1.5 shadow-2xl" aria-label="Account menu">
+                        {user && <>
+                            <p className="px-2.5 pb-1 pt-0.5 text-[11px] font-semibold uppercase tracking-wider text-slate-400">{user.firstName}'s account</p>
+                            <NavLink onClick={closeMenu} to="/settings" className={({ isActive }) => `flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-semibold ${isActive ? "bg-blue-50 text-accent" : "text-slate-700 hover:bg-slate-50"}`}>
+                                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-600"><FiSettings /></span>Settings
+                            </NavLink>
+                            <NavLink onClick={closeMenu} to="/my-orders" className={({ isActive }) => `mt-0.5 flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-semibold ${isActive ? "bg-blue-50 text-accent" : "text-slate-700 hover:bg-slate-50"}`}>
+                                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-50 text-violet-600"><FiPackage /></span>My orders
+                            </NavLink>
+                            <div className="my-1 border-t border-slate-100" />
+                        </>}
+
+                        {user?.isAdmin && <NavLink onClick={closeMenu} to="/admin" className="mt-0.5 flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">
+                            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-accent"><FiPackage /></span>Admin dashboard
+                        </NavLink>}
+                        <div className="my-1 border-t border-slate-100" />
+                        {user ? <button onClick={logout} className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-sm font-semibold text-red-600 hover:bg-red-50">
+                            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-red-50"><FiLogOut /></span>Logout
+                        </button> : <Link onClick={closeMenu} to="/login" className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">
+                            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-accent"><FiUser /></span>Log in or register
+                        </Link>}
                     </nav>
                 )}
 
             </header>
+            {mobileMenuOpen && <button className="fixed inset-0 z-40 cursor-default" onClick={closeMenu} aria-label="Close account menu" />}
 
 
-            <div className="fixed bottom-0 flex lg:hidden w-screen h-[80px] z-30 bg-white shadow-2xl shadow-black justify-evenly">
+            <nav className="fixed inset-x-0 bottom-0 z-30 flex h-[76px] items-stretch border-t border-slate-200 bg-white/95 px-1 shadow-[0_-8px_24px_rgba(15,23,42,0.12)] backdrop-blur lg:hidden" aria-label="Main navigation">
                 
-                <Link className="h-full min-w-0 flex-1 flex flex-col items-center justify-center" to="/">
-                    <CiHome className="text-3xl text-accent" />
-                    <span className="whitespace-nowrap text-[10px] text-accent">Home</span>
-                </Link>
+                <NavLink end className={mobileLinkClass} to="/">
+                    <CiHome className="text-[28px]" />
+                    <span>Home</span>
+                </NavLink>
 
-                <Link className="h-full min-w-0 flex-1 flex flex-col items-center justify-center" to="/products">
-                    <CiBoxList className="text-3xl text-accent" />
-                    <span className="whitespace-nowrap text-[10px] text-accent">Products</span>
-                </Link>
+                <NavLink className={mobileLinkClass} to="/products">
+                    <CiBoxList className="text-[28px]" />
+                    <span>Products</span>
+                </NavLink>
 
-                <Link className="h-full min-w-0 flex-1 flex flex-col items-center justify-center" to="/cart">
-                    <CiPhone className="text-3xl text-accent" />
-                    <span className="whitespace-nowrap text-[10px] text-accent">Contact</span>
-                </Link>
+                <NavLink className={mobileLinkClass} to="/about">
+                    <FiInfo className="text-[25px]" />
+                    <span>About</span>
+                </NavLink>
 
-                <Link className="h-full min-w-0 flex-1 flex flex-col items-center justify-center" to="/cart">
-                    <CiShoppingCart className="text-3xl text-accent" />
-                    <span className="whitespace-nowrap text-[10px] text-accent">Cart</span>
-                </Link>
-                <UserData />
+                <NavLink className={mobileLinkClass} to="/reviews">
+                    <FiStar className="text-[25px]" />
+                    <span>Reviews</span>
+                </NavLink>
 
-            </div>
+                <NavLink className={mobileLinkClass} to="/cart">
+                    <CiShoppingCart className="text-[28px]" />
+                    <span>Cart</span>
+                </NavLink>
+            </nav>
 
         </>
 
