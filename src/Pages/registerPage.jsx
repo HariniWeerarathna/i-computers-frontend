@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../lib/api";
+import { useGoogleLogin } from "@react-oauth/google";
+import UserContext from "../context/userContext";
 
 
 export default function RegisterPage(){
@@ -13,6 +15,23 @@ export default function RegisterPage(){
     const [password , setPassword] = useState("")
     const [confirmPassword , setConfirmPassword] = useState("")
     const navigate = useNavigate()
+    const userData = useContext(UserContext)
+
+    const googleRegister = useGoogleLogin({
+        onSuccess: async (response) => {
+            try {
+                const { data } = await api.post("/users/google", { accessToken: response.access_token })
+                localStorage.setItem("token", data.token)
+                userData.setUser(data.user)
+                toast.success("Google registration successful")
+                navigate(data.isAdmin ? "/admin" : "/", { replace: true })
+            } catch (error) {
+                console.error("Google registration failed:", error)
+                toast.error(error.response?.data?.message || "Google registration failed")
+            }
+        },
+        onError: () => toast.error("Google registration was cancelled or failed"),
+    })
 
 
     function handleRegister(){
@@ -120,7 +139,7 @@ export default function RegisterPage(){
                 <button onClick={handleRegister} className="w-full h-12 bg-accent rounded-lg text-white font-bold mt-5 ">Register</button>
                 <p className="w-full  text-right">Already have an account? Login <Link to="/login" className="text-accent font-bold">here</Link></p>
 
-                <button  className="w-full h-12 bg-secondary/20 rounded-lg text-secondary font-bold mt-5 border-2 border-secondary hover:bg-secondary hover:text-white transition-colors flex items-center justify-center gap-2"><FcGoogle /> Register with Google</button>
+                <button type="button" onClick={() => googleRegister()} className="w-full h-12 bg-secondary/20 rounded-lg text-secondary font-bold mt-5 border-2 border-secondary hover:bg-secondary hover:text-white transition-colors flex items-center justify-center gap-2"><FcGoogle /> Register with Google</button>
            
             </div>
         </div>
